@@ -11,33 +11,8 @@ const nextConfig: NextConfig = {
         pathname: "/**",
       },
       {
-        // Strapi Cloud main domain
         protocol: "https",
-        hostname: "*.strapiapp.com",
-        pathname: "/**",
-      },
-      {
-        // Strapi Cloud specific subdomain
-        protocol: "https",
-        hostname: "promising-benefit-793e66c25a.strapiapp.com",
-        pathname: "/**",
-      },
-      {
-        // Strapi Cloud media CDN (AWS S3)
-        protocol: "https",
-        hostname: "*.s3.*.amazonaws.com",
-        pathname: "/**",
-      },
-      {
-        // Strapi Cloud media CDN alternate pattern
-        protocol: "https",
-        hostname: "s3.*.amazonaws.com",
-        pathname: "/**",
-      },
-      {
-        // Strapi media bucket
-        protocol: "https",
-        hostname: "*.media.strapiapp.com",
+        hostname: "**.strapiapp.com",
         pathname: "/**",
       },
       {
