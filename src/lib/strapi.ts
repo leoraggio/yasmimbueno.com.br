@@ -1,3 +1,15 @@
+import type {
+  HomepageData,
+  AboutData,
+  ApproachData,
+  QuoteData,
+  ContactData,
+  SiteSettingsData,
+  ServiceData,
+  FAQData,
+  LandingPageData,
+} from "@/types/strapi";
+
 const STRAPI_URL = process.env.STRAPI_URL || "http://localhost:1337";
 const STRAPI_TOKEN = process.env.STRAPI_API_TOKEN;
 
@@ -55,8 +67,8 @@ function buildPopulate(fields: string[]): string {
 }
 
 // Landing page content - Single Types
-export const getHomepage = () =>
-  fetchStrapi(
+export const getHomepage = (): Promise<StrapiResponse<HomepageData> | null> =>
+  fetchStrapi<HomepageData>(
     "/homepage?" +
       buildPopulate([
         "primaryCTA",
@@ -68,8 +80,8 @@ export const getHomepage = () =>
       ])
   );
 
-export const getAbout = () =>
-  fetchStrapi(
+export const getAbout = (): Promise<StrapiResponse<AboutData> | null> =>
+  fetchStrapi<AboutData>(
     "/about?" +
       buildPopulate([
         "profileImage",
@@ -78,24 +90,24 @@ export const getAbout = () =>
       ])
   );
 
-export const getApproach = () =>
-  fetchStrapi("/approach?" + buildPopulate(["pillars"]));
+export const getApproach = (): Promise<StrapiResponse<ApproachData> | null> =>
+  fetchStrapi<ApproachData>("/approach?" + buildPopulate(["pillars"]));
 
-export const getQuote = () =>
-  fetchStrapi("/quote?" + buildPopulate(["backgroundImage"]));
+export const getQuote = (): Promise<StrapiResponse<QuoteData> | null> =>
+  fetchStrapi<QuoteData>("/quote?" + buildPopulate(["backgroundImage"]));
 
-export const getContact = () =>
-  fetchStrapi("/contact?" + buildPopulate(["socialLinks"]));
+export const getContact = (): Promise<StrapiResponse<ContactData> | null> =>
+  fetchStrapi<ContactData>("/contact?" + buildPopulate(["socialLinks"]));
 
-export const getSiteSettings = () =>
-  fetchStrapi("/site-setting?populate=*");
+export const getSiteSettings = (): Promise<StrapiResponse<SiteSettingsData> | null> =>
+  fetchStrapi<SiteSettingsData>("/site-setting?populate=*");
 
 // Landing page content - Collection Types
-export const getFAQ = () =>
-  fetchStrapi("/faqs?sort=order:asc");
+export const getFAQ = (): Promise<StrapiResponse<FAQData[]> | null> =>
+  fetchStrapi<FAQData[]>("/faqs?sort=order:asc");
 
-export const getServices = () =>
-  fetchStrapi("/services?sort=order:asc&" + buildPopulate(["features"]));
+export const getServices = (): Promise<StrapiResponse<ServiceData[]> | null> =>
+  fetchStrapi<ServiceData[]>("/services?sort=order:asc&" + buildPopulate(["features"]));
 
 // Blog content (Phase 3)
 export const getBlogPosts = () =>
@@ -109,7 +121,7 @@ export const getBlogPost = (slug: string) =>
   );
 
 // Helper to get all landing page data in one call
-export async function getLandingPageData() {
+export async function getLandingPageData(): Promise<LandingPageData> {
   console.log(`[Strapi] Fetching all landing page data from: ${STRAPI_URL}`);
   
   const [homepage, about, approach, quote, contact, siteSettings, faq, services] =
