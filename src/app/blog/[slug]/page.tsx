@@ -152,15 +152,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               </p>
             )}
 
-            <div
-              className="prose prose-lg prose-brand max-w-none
-                prose-headings:font-serif prose-headings:text-gray-900
-                prose-p:text-gray-700 prose-p:leading-relaxed
-                prose-a:text-brand-600 prose-a:no-underline hover:prose-a:underline
-                prose-strong:text-gray-900
-                prose-ul:text-gray-700 prose-ol:text-gray-700
-                prose-blockquote:border-brand-400 prose-blockquote:italic prose-blockquote:text-gray-600"
-            >
+            <div className="prose prose-lg max-w-none">
               <ReactMarkdown>{post.content || ""}</ReactMarkdown>
             </div>
           </div>
