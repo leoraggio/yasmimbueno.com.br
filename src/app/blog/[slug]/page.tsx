@@ -8,7 +8,7 @@ import { getBlogPost, getBlogPosts, getLandingPageData } from "@/lib/strapi";
 import { getStrapiMediaUrl, isLocalhostUrl } from "@/lib/strapi-helpers";
 import { Navigation } from "@/components/sections/Navigation";
 import { Footer } from "@/components/sections/Footer";
-import { ReadingProgress, CopyLinkButton } from "@/components/blog";
+import { ReadingProgress } from "@/components/blog";
 
 interface BlogPostPageProps {
   params: Promise<{ slug: string }>;
@@ -196,16 +196,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
       {/* Content Layout */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
-          {/* Sticky Sidebar Left - Copy Link */}
-          <div className="hidden lg:block lg:col-span-1">
-            <div className="sticky top-32 flex flex-col gap-4 items-center">
-              <CopyLinkButton />
-            </div>
-          </div>
-
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
           {/* Article Content */}
-          <article className="lg:col-span-7">
+          <article className="lg:col-span-2">
             <div className="bg-white rounded-2xl shadow-lg p-6 md:p-10 lg:p-12">
               {/* Content with drop cap on first paragraph */}
               <div className="prose prose-lg max-w-none prose-article">
@@ -260,14 +253,10 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               </Link>
             </div>
 
-            {/* Mobile copy link */}
-            <div className="lg:hidden mt-8 flex justify-center">
-              <CopyLinkButton />
-            </div>
           </article>
 
           {/* Sidebar Right */}
-          <aside className="lg:col-span-4 space-y-8">
+          <aside className="lg:col-span-1 space-y-8">
             {/* Author Bio Box */}
             <div className="bg-white border border-brand-100 p-8 rounded-xl shadow-sm">
               <div className="flex items-center gap-4 mb-4">
