@@ -5,10 +5,11 @@ import Link from "next/link";
 import { Menu, X, Sprout } from "lucide-react";
 
 const navLinks = [
-  { href: "#about", label: "Sobre" },
-  { href: "#services", label: "Serviços" },
-  { href: "#approach", label: "Abordagem" },
-  { href: "#faq", label: "Dúvidas" },
+  { href: "/#about", label: "Sobre" },
+  { href: "/#services", label: "Serviços" },
+  { href: "/#approach", label: "Abordagem" },
+  { href: "/#faq", label: "Dúvidas" },
+  { href: "/blog", label: "Blog" },
 ];
 
 export function Navigation() {
@@ -57,7 +58,7 @@ export function Navigation() {
               </Link>
             ))}
             <Link
-              href="#agendamento"
+              href="/#agendamento"
               className="bg-brand-600 text-white px-6 py-2.5 rounded-full hover:bg-brand-700 transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5 text-sm font-medium"
             >
               Agendar Consulta
@@ -99,7 +100,7 @@ export function Navigation() {
             </Link>
           ))}
           <Link
-            href="#agendamento"
+            href="/#agendamento"
             onClick={() => setIsOpen(false)}
             className="block mt-4 text-center px-3 py-3 text-base font-medium bg-brand-600 text-white rounded-md hover:bg-brand-700"
           >

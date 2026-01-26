@@ -7,6 +7,7 @@ import type {
   SiteSettingsData,
   ServiceData,
   FAQData,
+  BlogPostData,
   LandingPageData,
 } from "@/types/strapi";
 
@@ -110,14 +111,14 @@ export const getServices = (): Promise<StrapiResponse<ServiceData[]> | null> =>
   fetchStrapi<ServiceData[]>("/services?sort=order:asc&" + buildPopulate(["features"]));
 
 // Blog content (Phase 3)
-export const getBlogPosts = () =>
-  fetchStrapi(
-    "/blog-posts?populate=*&sort=publishedAt:desc"
+export const getBlogPosts = (): Promise<StrapiResponse<BlogPostData[]> | null> =>
+  fetchStrapi<BlogPostData[]>(
+    "/blog-posts?populate=*&sort=publishedAt:desc&publicationState=live"
   );
 
-export const getBlogPost = (slug: string) =>
-  fetchStrapi(
-    `/blog-posts?filters[slug][$eq]=${slug}&populate=*`
+export const getBlogPost = (slug: string): Promise<StrapiResponse<BlogPostData[]> | null> =>
+  fetchStrapi<BlogPostData[]>(
+    `/blog-posts?filters[slug][$eq]=${slug}&populate=*&publicationState=live`
   );
 
 // Helper to get all landing page data in one call

@@ -137,6 +137,23 @@ export interface FAQData {
   order?: number;
 }
 
+// Blog
+export interface BlogPostData {
+  id: number;
+  documentId: string;
+  title: string;
+  slug: string;
+  excerpt?: string;
+  content?: string;
+  featuredImage?: StrapiMedia;
+  author?: string;
+  readTime?: number;
+  category?: string;
+  publishedAt?: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
 // Strapi Response wrapper
 export interface StrapiResponse<T> {
   data: T;
