@@ -49,11 +49,13 @@ async function fetchStrapi<T>(endpoint: string): Promise<StrapiResponse<T> | nul
     });
 
     if (!res.ok) {
-      console.error(`[Strapi] Failed to fetch ${endpoint}: ${res.status} ${res.statusText}`);
+      const errorText = await res.text();
+      console.error(`[Strapi] Failed to fetch ${endpoint}: ${res.status} ${res.statusText}`, errorText);
       return null;
     }
 
     const data = await res.json();
+    console.log(`[Strapi] Response for ${endpoint}:`, JSON.stringify(data).slice(0, 500));
     return data;
   } catch (error) {
     console.error(`[Strapi] Error fetching ${endpoint}:`, error);
