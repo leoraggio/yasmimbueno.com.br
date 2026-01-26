@@ -1,0 +1,11 @@
+export { Navigation } from "./Navigation";
+export { Hero } from "./Hero";
+export { About } from "./About";
+export { Approach } from "./Approach";
+export { Services } from "./Services";
+export { Quote } from "./Quote";
+export { FAQ } from "./FAQ";
+export { Scheduling } from "./Scheduling";
+export { Contact } from "./Contact";
+export { Footer } from "./Footer";
+export { WhatsAppButton } from "./WhatsAppButton";
