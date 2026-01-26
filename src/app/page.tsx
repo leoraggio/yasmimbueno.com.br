@@ -7,6 +7,7 @@ import {
   Quote,
   FAQ,
   Scheduling,
+  BlogSection,
   Contact,
   Footer,
   WhatsAppButton,
@@ -27,6 +28,7 @@ export default async function Home() {
         <Quote data={data.quote?.data} />
         <FAQ data={data.faq?.data} />
         <Scheduling whatsappNumber={data.siteSettings?.data?.whatsappNumber} />
+        <BlogSection posts={data.blogPosts?.data} />
         <Contact data={data.contact?.data} />
       </main>
       <Footer data={data.siteSettings?.data} />

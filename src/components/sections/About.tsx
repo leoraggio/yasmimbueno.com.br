@@ -24,7 +24,7 @@ export function About({ data }: AboutProps) {
   const title = data?.title || defaultData.title;
   const content = data?.content || defaultData.content;
   const credentials = data?.credentials || defaultData.credentials;
-  const profileImageUrl = getStrapiMediaUrl(data?.profileImage) || "/about-img.jpg";
+  const profileImageUrl = getStrapiMediaUrl(data?.profileImage) || "/about-img.webp";
   const signatureImageUrl = getStrapiMediaUrl(data?.signatureImage) || "/signature.svg";
   const isLocalProfileImage = isLocalhostUrl(profileImageUrl);
   const isLocalSignatureImage = isLocalhostUrl(signatureImageUrl);

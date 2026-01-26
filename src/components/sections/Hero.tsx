@@ -32,7 +32,7 @@ export function Hero({ data }: HeroProps) {
   const trustBadges = data?.trustBadges || defaultData.trustBadges;
   const primaryCTA = data?.primaryCTA || defaultData.primaryCTA;
   const secondaryCTA = data?.secondaryCTA || defaultData.secondaryCTA;
-  const heroImageUrl = getStrapiMediaUrl(data?.heroImage) || "/hero-img.jpg";
+  const heroImageUrl = getStrapiMediaUrl(data?.heroImage) || "/hero-img.webp";
   const isLocalImage = isLocalhostUrl(heroImageUrl);
 
   return (

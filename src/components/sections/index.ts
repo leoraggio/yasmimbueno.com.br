@@ -6,6 +6,7 @@ export { Services } from "./Services";
 export { Quote } from "./Quote";
 export { FAQ } from "./FAQ";
 export { Scheduling } from "./Scheduling";
+export { BlogSection } from "./BlogSection";
 export { Contact } from "./Contact";
 export { Footer } from "./Footer";
 export { WhatsAppButton } from "./WhatsAppButton";

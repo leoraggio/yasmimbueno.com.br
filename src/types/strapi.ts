@@ -177,4 +177,5 @@ export interface LandingPageData {
   siteSettings: StrapiResponse<SiteSettingsData> | null;
   faq: StrapiResponse<FAQData[]> | null;
   services: StrapiResponse<ServiceData[]> | null;
+  blogPosts: StrapiResponse<BlogPostData[]> | null;
 }

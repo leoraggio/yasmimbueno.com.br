@@ -125,7 +125,7 @@ export const getBlogPost = (slug: string): Promise<StrapiResponse<BlogPostData[]
 export async function getLandingPageData(): Promise<LandingPageData> {
   console.log(`[Strapi] Fetching all landing page data from: ${STRAPI_URL}`);
   
-  const [homepage, about, approach, quote, contact, siteSettings, faq, services] =
+  const [homepage, about, approach, quote, contact, siteSettings, faq, services, blogPosts] =
     await Promise.all([
       getHomepage(),
       getAbout(),
@@ -135,6 +135,7 @@ export async function getLandingPageData(): Promise<LandingPageData> {
       getSiteSettings(),
       getFAQ(),
       getServices(),
+      getBlogPosts(),
     ]);
 
   return {
@@ -146,5 +147,6 @@ export async function getLandingPageData(): Promise<LandingPageData> {
     siteSettings,
     faq,
     services,
+    blogPosts,
   };
 }
