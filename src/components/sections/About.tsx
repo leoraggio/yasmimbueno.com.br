@@ -47,7 +47,7 @@ export function About({ data }: AboutProps) {
               unoptimized={isLocalProfileImage}
             />
             {/* Decorative border */}
-            <div className="absolute top-4 left-4 border-2 border-brand-400 w-full h-full rounded-lg -z-0 transform -translate-x-4 -translate-y-4 hidden md:block opacity-60 max-w-md mx-auto" />
+            <div className="absolute top-4 left-4 border-2 border-brand-400 w-full h-full rounded-lg z-0 transform -translate-x-4 -translate-y-4 hidden md:block opacity-60 max-w-md mx-auto" />
           </div>
 
           {/* Content */}
