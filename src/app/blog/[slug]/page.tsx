@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Calendar, Clock, ArrowLeft, User } from "lucide-react";
+import ReactMarkdown from "react-markdown";
 import { getBlogPost, getBlogPosts, getLandingPageData } from "@/lib/strapi";
 import { getStrapiMediaUrl, isLocalhostUrl } from "@/lib/strapi-helpers";
 import { Navigation } from "@/components/sections/Navigation";
@@ -159,8 +160,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 prose-strong:text-gray-900
                 prose-ul:text-gray-700 prose-ol:text-gray-700
                 prose-blockquote:border-brand-400 prose-blockquote:italic prose-blockquote:text-gray-600"
-              dangerouslySetInnerHTML={{ __html: post.content || "" }}
-            />
+            >
+              <ReactMarkdown>{post.content || ""}</ReactMarkdown>
+            </div>
           </div>
 
           {/* Author Card */}

@@ -43,7 +43,7 @@ export function About({ data }: AboutProps) {
               alt="Yasmim Bueno"
               width={500}
               height={600}
-              className="rounded-lg shadow-xl w-full max-w-md mx-auto relative z-10 grayscale hover:grayscale-0 transition-all duration-500 border border-brand-500"
+              className="rounded-lg shadow-xl w-full max-w-md mx-auto relative z-10 border border-brand-500"
               unoptimized={isLocalProfileImage}
             />
             {/* Decorative border */}
