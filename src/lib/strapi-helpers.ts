@@ -2,52 +2,19 @@ import { StrapiMedia } from "@/types/strapi";
 
 const STRAPI_URL = process.env.STRAPI_URL || "http://localhost:1337";
 
-// Extended type to handle various Strapi response formats
-interface StrapiMediaResponse {
-  url?: string;
-  data?: {
-    url?: string;
-    attributes?: {
-      url?: string;
-    };
-  } | null;
-}
-
 /**
  * Get the full URL for a Strapi media file
- * Handles multiple possible response formats from Strapi v5
  */
-export function getStrapiMediaUrl(media: StrapiMedia | StrapiMediaResponse | undefined | null): string {
-  if (!media) return "";
-  
-  // Try to extract URL from various possible structures
-  let url: string | undefined;
-  
-  // Direct url property (flat structure)
-  if ("url" in media && typeof media.url === "string") {
-    url = media.url;
-  }
-  // Wrapped in data.attributes (Strapi v4/v5 format)
-  else if ("data" in media && media.data) {
-    if ("attributes" in media.data && media.data.attributes?.url) {
-      url = media.data.attributes.url;
-    } else if ("url" in media.data && typeof media.data.url === "string") {
-      url = media.data.url;
-    }
-  }
-  
-  if (!url) {
-    console.log("[Strapi] Could not extract URL from media:", JSON.stringify(media));
-    return "";
-  }
+export function getStrapiMediaUrl(media: StrapiMedia | undefined): string {
+  if (!media?.url) return "";
   
   // If it's already a full URL, return as is
-  if (url.startsWith("http")) {
-    return url;
+  if (media.url.startsWith("http")) {
+    return media.url;
   }
   
   // Otherwise, prepend the Strapi URL
-  return `${STRAPI_URL}${url}`;
+  return `${STRAPI_URL}${media.url}`;
 }
 
 /**
