@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Lato, Cormorant_Garamond } from "next/font/google";
 import { JsonLd } from "@/components/JsonLd";
+import { brandFontVariables } from "./fonts";
 import "./globals.css";
 
 const lato = Lato({
@@ -81,7 +82,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-BR" className="scroll-smooth">
+    <html lang="pt-BR" className={`scroll-smooth ${brandFontVariables}`}>
       <head>
         <JsonLd />
       </head>

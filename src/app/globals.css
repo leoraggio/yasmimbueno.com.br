@@ -59,6 +59,42 @@
   --radius-4xl: calc(var(--radius) + 16px);
 }
 
+/* Brand Tokens - Yasmim Bueno Design System, tokens/colors.css and typography.css.
+   `static` so tokens reach :root even before a utility references one; without it
+   Tailwind tree-shakes the ones no component has used yet. The type stacks need
+   the next/font variables on <html>, not <body> - a var() inside a custom property
+   resolves where the property is declared, and these are declared at :root.
+   The brand- and sand- scales above are the outgoing palette, removed once the
+   redesign lands and nothing consumes them. */
+@theme static {
+  --font-display: var(--font-recline), serif;
+  --font-subtitle: var(--font-comfortaa), sans-serif;
+  --font-body: var(--font-space-grotesk), sans-serif;
+
+  --color-navy-deep: #0d2a4a;
+  --color-ocean-blue: #43627f;
+  --color-slate-blue: #a4bad2;
+  --color-ice-blue: #dce3ed;
+  --color-cream: #fff9eb;
+
+  /* Derivatives; the design system calls these --text-muted,
+     --accent-primary-hover and --accent-primary-active */
+  --color-muted-blue: #6c859b;
+  --color-ocean-blue-hover: #375267;
+  --color-ocean-blue-active: #2c4353;
+
+  /* Literals the landing mock uses that the design system's token file does not
+     carry. Named for the job they do in the mock. */
+  --color-hairline: #e7dec9; /* borders on cream */
+  --color-warm-sand: #eae1cb; /* hero blob */
+  --color-mist-blue: #c4d0df; /* secondary text on navy */
+  --color-frost-blue: #e7edf4; /* footer values */
+  --color-steel-blue: #7e93ab; /* footer copyright */
+  --color-navy-deep-hover: #132f52; /* navy button hover */
+  --color-whatsapp: #25d366;
+  --color-whatsapp-hover: #1fb457;
+}
+
 :root {
   --radius: 0.625rem;
   --background: #fafaf9;
