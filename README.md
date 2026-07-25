@@ -18,13 +18,17 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The brand typefaces — Recline, Comfortaa and Space Grotesk — are self-hosted
+from `src/fonts` through [`next/font/local`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts).
+Nothing is fetched from a font CDN at runtime; see
+[`docs/brand-assets.md`](docs/brand-assets.md) for why.
 
 ## Testing
 
 The landing page is guarded by a visual regression suite. One command builds the
-app, serves it, and diffs a full-page screenshot at 1440×900, 768×1024 and
-390×844 against the baselines committed under `tests/visual/__screenshots__/`:
+app, serves it, diffs a full-page screenshot at 1440×900, 768×1024 and 390×844
+against the baselines committed under `tests/visual/__screenshots__/`, and runs
+the structural assertions that a screenshot cannot make:
 
 ```bash
 npm run test:visual

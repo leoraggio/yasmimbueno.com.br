@@ -15,6 +15,9 @@ import { defineConfig, devices } from "@playwright/test";
 const PORT = 3100;
 const BASE_URL = `http://127.0.0.1:${PORT}`;
 
+/** The spec every viewport project runs; `structure` runs the other one. */
+const SCREENSHOTS = /landing\.spec\.ts$/;
+
 export default defineConfig({
   testDir: "./tests/visual",
 
@@ -62,22 +65,34 @@ export default defineConfig({
   },
 
   /*
-   * Width is the whole point of each project, so it is the whole name. Device
-   * emulation (`isMobile`, `hasTouch`) is deliberately off: the gate is what
-   * the layout does at a width, and emulation would add a second variable to
-   * every diff.
+   * Width is the whole point of each screenshot project, so it is the whole
+   * name. Device emulation (`isMobile`, `hasTouch`) is deliberately off: the
+   * gate is what the layout does at a width, and emulation would add a second
+   * variable to every diff.
+   *
+   * `structure` is not a viewport — it holds the assertions a picture cannot
+   * make, each setting the width it cares about. Splitting it out by
+   * `testMatch` is what keeps it from running once per viewport for nothing.
    */
   projects: [
     {
+      name: "structure",
+      testMatch: /structure\.spec\.ts$/,
+      use: { ...devices["Desktop Chrome"] },
+    },
+    {
       name: "desktop-1440",
+      testMatch: SCREENSHOTS,
       use: { ...devices["Desktop Chrome"], viewport: { width: 1440, height: 900 } },
     },
     {
       name: "tablet-768",
+      testMatch: SCREENSHOTS,
       use: { ...devices["Desktop Chrome"], viewport: { width: 768, height: 1024 } },
     },
     {
       name: "phone-390",
+      testMatch: SCREENSHOTS,
       use: { ...devices["Desktop Chrome"], viewport: { width: 390, height: 844 } },
     },
   ],

@@ -13,8 +13,8 @@ npm run test:visual
 That one command does everything: it runs `next build`, serves the build on
 port 3100, opens the landing page in a pinned browser at three viewports,
 captures a full-page screenshot of each, and diffs it against the baseline
-committed in this repo. It needs no dev server running and no environment
-variables set.
+committed in this repo. It also runs the structural assertions below. It needs
+no dev server running and no environment variables set.
 
 First run on a new machine, install the browser the pinned Playwright expects:
 
@@ -43,6 +43,24 @@ happens on the picture, not on the CSS.
 The projects set a viewport width and nothing else. Device emulation
 (`isMobile`, `hasTouch`) is off on purpose: the gate is what the layout does at
 a width, and emulation would put a second variable into every diff.
+
+## What else is checked
+
+A screenshot freezes a layout without saying what is right about it, and it
+photographs a page that scrolls sideways as happily as one that does not. So a
+fourth project, `structure`, runs the assertions a picture cannot make
+(`tests/visual/structure.spec.ts`):
+
+| Assertion | Why it is here |
+| --- | --- |
+| The document does not scroll sideways at 1440, 1024, 768, 414, 390 and 360 | The most likely responsive regression, and the one a full-page screenshot hides. The hero's absolutely positioned circles are the known risk |
+| The page requests nothing from off the machine | Determinism. A page that reaches the network is a page whose pixels someone else gets a vote on |
+| The floating WhatsApp button carries the drafted wa.me URL and opens in a new tab | Every CTA is meant to lead to the same conversation; a screenshot cannot read an `href` |
+
+It is a project rather than another spec in the viewport projects because each
+of its tests sets the width it cares about — without the split it would run
+three times over for nothing. That is what the `testMatch` in
+`playwright.config.ts` is doing.
 
 ## Reading a failure
 
@@ -94,32 +112,32 @@ closes each known source of drift in one place:
 - **Network** — every request to anything but the local server is aborted, so a
   CDN cannot decide what the page looks like today. Origins that were turned
   away are attached to the test as a `blocked-external-requests` annotation.
-  Today that list is not empty: the pre-redesign page still pulls a stock photo
-  from Unsplash behind the Frase section. Issue #4 removes it, after which
-  anything appearing in that annotation is itself a regression.
+  That list is now empty and the `structure` project asserts it stays that way,
+  so anything appearing in the annotation is itself a regression.
 - **Webfonts** — `document.fonts.ready` settles before anything is measured, so
   no shot catches the fallback face. The brand faces are self-hosted
   (`src/app/fonts.ts`), which is what makes this reliable rather than hopeful.
 - **Images** — the page is scrolled top to bottom and back first, so
   `loading="lazy"` images commit to a size before the capture reaches them, and
   every `<img>` is awaited to `complete`.
+- **The reveal animation** — `Reveal` publishes `data-revealed="true"` once its
+  content has arrived at its final state, and every screenshot waits for every
+  wrapper on the page to say so. Waiting on the animation rather than sleeping
+  past it is why the suite has no arbitrary timeouts in it.
 - **Motion** — the browser context forces `prefers-reduced-motion: reduce`, and
   the screenshot itself is taken with `animations: "disabled"`, which
   fast-forwards finite CSS animations and transitions to their end state (and
   resets infinite ones to their start). The reduced-motion setting is
   *asserted* on every run rather than assumed, because a config option that
-  quietly stops applying would leave the suite shooting mid-animation.
+  quietly stops applying would leave the suite shooting mid-animation. That is
+  not a hypothetical: `use: { reducedMotion }` is silently ignored by this
+  Playwright version, and only `contextOptions` takes effect.
 - **Paint** — two animation frames after all of the above, so the layout the
   browser computed is the layout it has drawn.
 - **The server** — a production build, never `next dev`, whose overlay and dev
   indicator would land in the screenshots. Port 3100 rather than 3000, and an
   already-running server is never reused, so a stray dev server cannot be
   mistaken for the build.
-
-The build logs a wall of `[Strapi] Error fetching …` while this runs. That is
-expected: no CMS is running locally, every section falls back to its hardcoded
-default, and the result is deterministic. Issue #4 removes the CMS layer and the
-noise with it.
 
 ## Pinning
 
@@ -148,10 +166,10 @@ to run Linux x64.
 
 ## Scope
 
-Right now the baselines are of the **pre-redesign** page, and that is
-deliberate: the harness (issue #3) had to be proven deterministic before the
-redesign (issue #1) started moving underneath it. As the landing page is rebuilt
-section by section, each task updates these baselines as part of its own change.
+Right now the baselines are of the **stripped shell** — a cream field with the
+floating WhatsApp button in the corner and nothing else on it (issue #4). As the
+landing page is rebuilt section by section, each task updates these baselines as
+part of its own change, and the picture fills in.
 
 Issue #15 replaces the desktop baseline with one derived from the design mock,
 at which point `desktop-1440` becomes the parity gate. The tablet and phone

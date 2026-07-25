@@ -1,38 +1,18 @@
-import {
-  Navigation,
-  Hero,
-  About,
-  Approach,
-  Services,
-  Quote,
-  FAQ,
-  Scheduling,
-  BlogSection,
-  Contact,
-  Footer,
-  WhatsAppButton,
-} from "@/components/sections";
-import { getLandingPageData } from "@/lib/strapi";
+import { FloatingWhatsApp } from "@/components/FloatingWhatsApp";
 
-export default async function Home() {
-  const data = await getLandingPageData();
-
+/**
+ * The landing page, stripped to its shell.
+ *
+ * The mock's sections land here in page order — Nav · Hero · Sobre · farol
+ * divider · Abordagem · Serviços · Frase · Dúvidas · Contato+Rodapé — one
+ * ticket each. Everything on the page is hardcoded from the mock and takes no
+ * data, so this stays a plain server component.
+ */
+export default function Home() {
   return (
     <>
-      <Navigation />
-      <main>
-        <Hero data={data.homepage?.data} />
-        <About data={data.about?.data} />
-        <Approach data={data.approach?.data} />
-        <Services data={data.services?.data} />
-        <Quote data={data.quote?.data} />
-        <FAQ data={data.faq?.data} />
-        <Scheduling whatsappNumber={data.siteSettings?.data?.whatsappNumber} />
-        <BlogSection posts={data.blogPosts?.data} />
-        <Contact data={data.contact?.data} />
-      </main>
-      <Footer data={data.siteSettings?.data} />
-      <WhatsAppButton whatsappNumber={data.siteSettings?.data?.whatsappNumber} />
+      <main />
+      <FloatingWhatsApp />
     </>
   );
 }

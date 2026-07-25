@@ -1,41 +1,12 @@
 import type { NextConfig } from "next";
 
+/**
+ * No `images.remotePatterns` and no `/admin` redirect: every image the page
+ * shows is committed under `public/`, and there is no CMS behind the site to
+ * send anyone to. Both went with the Strapi layer.
+ */
 const nextConfig: NextConfig = {
   reactCompiler: true,
-  images: {
-    remotePatterns: [
-      {
-        protocol: "http",
-        hostname: "localhost",
-        port: "1337",
-        pathname: "/**",
-      },
-      {
-        protocol: "https",
-        hostname: "**.strapiapp.com",
-        pathname: "/**",
-      },
-      {
-        protocol: "https",
-        hostname: "images.unsplash.com",
-        pathname: "/**",
-      },
-      {
-        protocol: "https",
-        hostname: "www.yasmimbueno.com.br",
-        pathname: "/**",
-      },
-    ],
-  },
-  async redirects() {
-    return [
-      {
-        source: "/admin",
-        destination: "https://promising-benefit-793e66c25a.strapiapp.com/admin",
-        permanent: false,
-      },
-    ];
-  },
 };
 
 export default nextConfig;

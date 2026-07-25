@@ -1,23 +1,7 @@
 import type { Metadata } from "next";
-import { Lato, Cormorant_Garamond } from "next/font/google";
 import { JsonLd } from "@/components/JsonLd";
 import { brandFontVariables } from "./fonts";
 import "./globals.css";
-
-const lato = Lato({
-  variable: "--font-lato",
-  subsets: ["latin"],
-  weight: ["300", "400", "700"],
-  display: "swap",
-});
-
-const cormorant = Cormorant_Garamond({
-  variable: "--font-cormorant",
-  subsets: ["latin"],
-  weight: ["400", "600"],
-  style: ["normal", "italic"],
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   title: {
@@ -82,13 +66,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-BR" className={`scroll-smooth ${brandFontVariables}`}>
+    <html lang="pt-BR" className={brandFontVariables}>
       <head>
         <JsonLd />
       </head>
-      <body className={`${lato.variable} ${cormorant.variable} font-sans`}>
-        {children}
-      </body>
+      <body>{children}</body>
     </html>
   );
 }

@@ -14,18 +14,57 @@ import { expect, type Page, type TestInfo } from "@playwright/test";
 const LOCAL_HOSTNAMES = new Set(["127.0.0.1", "localhost", "[::1]"]);
 
 /**
- * Navigates to `path` and resolves once the page has stopped changing.
+ * Whether a request left the machine. `data:` and `blob:` URLs never did, so
+ * only http(s) to a non-local host counts.
  *
- * The order is load-bearing: fonts settle before the page is walked, because
- * the walk is measured in page height and fallback metrics give the wrong
- * height; images are awaited after the walk, because the walk is what asks for
- * them.
+ * Shared with `structure.spec.ts`, which asserts the page makes no such
+ * request at all — one definition of "external", so the screenshots and the
+ * assertion cannot disagree about what they are looking at.
+ */
+export function isExternalUrl(requestUrl: string) {
+  const url = new URL(requestUrl);
+
+  if (url.protocol !== "http:" && url.protocol !== "https:") return false;
+
+  return !LOCAL_HOSTNAMES.has(url.hostname);
+}
+
+/**
+ * Navigates to `path` and resolves once the page has stopped changing.
  */
 export async function openSettled(page: Page, path: string, testInfo: TestInfo) {
   const blockedOrigins = await blockExternalRequests(page);
 
   await page.goto(path, { waitUntil: "load" });
 
+  await settle(page);
+
+  /*
+   * Blocking is silent to the test, so surface it in the report instead: with
+   * the CMS and the stock photography gone this list is empty, and anything
+   * that appears in it later is a regression worth a look.
+   */
+  if (blockedOrigins.size > 0) {
+    testInfo.annotations.push({
+      type: "blocked-external-requests",
+      description: [...blockedOrigins].sort().join(", "),
+    });
+  }
+}
+
+/**
+ * Everything after navigation: waits until the loaded page has stopped
+ * changing.
+ *
+ * The order is load-bearing: fonts settle before the page is walked, because
+ * the walk is measured in page height and fallback metrics give the wrong
+ * height; images are awaited after the walk, because the walk is what asks for
+ * them.
+ *
+ * Separate from `openSettled` for the one test that must watch the network
+ * rather than block it, and so needs the settling without the blocking.
+ */
+export async function settle(page: Page) {
   /*
    * Asserted rather than assumed: reduced motion is set in the config, where a
    * typo or an API move would silently stop forcing it and leave the suite
@@ -53,20 +92,20 @@ export async function openSettled(page: Page, path: string, testInfo: TestInfo) 
     Array.from(document.images).every((image) => image.complete),
   );
 
+  /*
+   * Reveal wrappers publish their settled state (`src/components/Reveal.tsx`),
+   * so the suite waits on the animation rather than sleeping past it. Under
+   * the forced reduced motion of this run they settle on hydration; the wait
+   * is what makes "on hydration" a fact rather than a hope.
+   */
+  await page.waitForFunction(() =>
+    Array.from(document.querySelectorAll("[data-revealed]")).every(
+      (target) => target.getAttribute("data-revealed") === "true",
+    ),
+  );
+
   /* Two frames, so the layout the browser computed is the one it has drawn. */
   await nextPaint(page);
-
-  /*
-   * Blocking is silent to the test, so surface it in the report instead: once
-   * the CMS and the stock photography are gone, this list should be empty, and
-   * anything that appears in it later is a regression worth a look.
-   */
-  if (blockedOrigins.size > 0) {
-    testInfo.annotations.push({
-      type: "blocked-external-requests",
-      description: [...blockedOrigins].sort().join(", "),
-    });
-  }
 }
 
 /**
@@ -77,16 +116,13 @@ async function blockExternalRequests(page: Page) {
   const blockedOrigins = new Set<string>();
 
   await page.route("**/*", (route) => {
-    const url = new URL(route.request().url());
+    const requestUrl = route.request().url();
 
-    if (url.protocol !== "http:" && url.protocol !== "https:") {
-      return route.continue();
-    }
-    if (LOCAL_HOSTNAMES.has(url.hostname)) {
+    if (!isExternalUrl(requestUrl)) {
       return route.continue();
     }
 
-    blockedOrigins.add(url.origin);
+    blockedOrigins.add(new URL(requestUrl).origin);
     return route.abort();
   });
 
