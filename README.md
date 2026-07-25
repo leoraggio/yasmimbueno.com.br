@@ -20,6 +20,21 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Testing
+
+The landing page is guarded by a visual regression suite. One command builds the
+app, serves it, and diffs a full-page screenshot at 1440×900, 768×1024 and
+390×844 against the baselines committed under `tests/visual/__screenshots__/`:
+
+```bash
+npm run test:visual
+```
+
+On a new machine, install the pinned browser first with
+`npx playwright install --with-deps chromium`. See
+[`docs/visual-regression.md`](docs/visual-regression.md) for how to read a
+failure and when it is right to update a baseline.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

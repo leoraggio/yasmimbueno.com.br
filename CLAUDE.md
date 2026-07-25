@@ -1,5 +1,15 @@
 # CLAUDE.md
 
+## Testing
+
+The landing page is guarded by a committed-baseline visual regression suite:
+`npm run test:visual`. Any change that alters what the page renders will turn it
+red. That is not a failure to route around — either the change was wrong, or the
+baselines belong in the same commit as the change that justifies them. See
+`docs/visual-regression.md`.
+
+`npm run typecheck` and `npm run lint` are the other two gates.
+
 ## Agent skills
 
 ### Issue tracker
