@@ -4,12 +4,12 @@ import { WHATSAPP_URL } from "@/lib/whatsapp";
 const SERVICE_GROUPS = [
   {
     id: "services-disorders",
-    title: "Transtornos que trato",
+    title: "Áreas de cuidado e acompanhamento",
     items: [
       "Depressão",
       "Transtorno Bipolar",
       "Transtorno da Personalidade Borderline",
-      "Neurodivergência",
+      "Neurodivergências",
     ],
   },
   {
@@ -44,7 +44,7 @@ const THERAPY_STEPS = [
 export function Services() {
   return (
     <section
-      id="servicos"
+      id="terapia"
       aria-labelledby="services-heading"
       className="mx-auto max-w-295 px-5 py-10 md:px-8 md:py-14 lg:px-10 lg:pt-22 lg:pb-23"
     >

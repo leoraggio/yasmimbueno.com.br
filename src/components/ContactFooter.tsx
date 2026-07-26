@@ -70,7 +70,7 @@ export function ContactFooter() {
           </span>
           <div className="flex gap-2 lg:gap-3">
             <a
-              href="https://instagram.com/yasmimbueno"
+              href="https://instagram.com/yasmimbueno.psi"
               target="_blank"
               rel="noreferrer"
               aria-label="Instagram"
@@ -89,7 +89,7 @@ export function ContactFooter() {
               </span>
             </a>
             <a
-              href="https://linkedin.com/in/yasmimbueno"
+              href="https://linkedin.com/in/yasmim-bueno-720720187"
               target="_blank"
               rel="noreferrer"
               aria-label="LinkedIn"

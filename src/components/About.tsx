@@ -56,9 +56,8 @@ export function About() {
             Olá, sou a Yasmim.
           </h2>
           <p className="mb-4 text-[16.5px] leading-[1.72] text-ice-blue">
-            Sou psicóloga, pós-graduada em Psicologia Clínica pela PUC-RS e
-            especializada em Terapias Contextuais. Acredito que a terapia é um
-            espaço de acolhimento e transformação. Atendo adultos que vivem
+            Sou psicóloga clínica, com pós graduação em Psicologia Clínica e especializada em Terapias Contextuais.
+            Acredito que a terapia é um espaço de acolhimento e transformação. Atendo adultos que vivem
             emoções intensas, momentos de crise ou oscilações de humor, que têm
             desafios de atenção e foco ou dificuldade em gerenciar a rotina, e
             mulheres que enfrentam sobrecarga e autocobrança no dia a dia.

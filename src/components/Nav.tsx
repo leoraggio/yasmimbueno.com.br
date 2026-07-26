@@ -5,7 +5,7 @@ import { WHATSAPP_URL } from "@/lib/whatsapp";
 // These anchors resolve when their landing-page sections ship.
 const SECTION_LINKS = [
   { href: "#sobre", label: "Sobre" },
-  { href: "#servicos", label: "Serviços" },
+  { href: "#terapia", label: "Terapia" },
   { href: "#abordagem", label: "Abordagem" },
   { href: "#duvidas", label: "Dúvidas" },
 ];

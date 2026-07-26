@@ -17,7 +17,7 @@ const FAQ_ITEMS = [
       "Os atendimentos são particulares. Ofereço a nota fiscal e toda a documentação necessária para que você solicite o reembolso junto à sua operadora de saúde.",
   },
   {
-    question: "Quanto tempo dura o tratamento",
+    question: "Quanto tempo dura o tratamento?",
     answer:
       "A duração varia de pessoa para pessoa, depende da sua demanda, dos seus objetivos terapêuticos e do seu ritmo. Avaliamos juntos, ao longo do caminho, o que faz sentido para você.",
   },
