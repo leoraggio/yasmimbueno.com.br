@@ -3,24 +3,27 @@ import { JsonLd } from "@/components/JsonLd";
 import { brandFontVariables } from "./fonts";
 import "./globals.css";
 
+const PAGE_TITLE =
+  "Yasmim Bueno | Psicóloga Clínica em Alphaville e Online";
+const PAGE_DESCRIPTION =
+  "Psicoterapia individual para adultos, online e em Alphaville, com Yasmim Bueno, psicóloga clínica especializada em ACT e DBT.";
+
 export const metadata: Metadata = {
   title: {
-    default: "Yasmim Bueno | Psicóloga Clínica",
+    default: PAGE_TITLE,
     template: "%s | Yasmim Bueno",
   },
-  description:
-    "Psicóloga Clínica especializada em Terapia de Aceitação e Compromisso (ACT). Atendimento online e presencial para ansiedade, depressão e autoconhecimento.",
+  description: PAGE_DESCRIPTION,
   keywords: [
-    "psicóloga",
-    "psicologia",
-    "terapia",
-    "ACT",
-    "terapia de aceitação e compromisso",
-    "ansiedade",
-    "depressão",
-    "autoconhecimento",
-    "saúde mental",
+    "psicóloga clínica",
+    "psicoterapia individual",
+    "psicóloga em Alphaville",
     "psicóloga online",
+    "terapia para adultos",
+    "ACT",
+    "Terapia de Aceitação e Compromisso",
+    "DBT",
+    "Terapia Comportamental Dialética",
   ],
   authors: [{ name: "Yasmim Bueno" }],
   creator: "Yasmim Bueno",
@@ -29,23 +32,13 @@ export const metadata: Metadata = {
     locale: "pt_BR",
     url: "https://yasmimbueno.com.br",
     siteName: "Yasmim Bueno - Psicóloga Clínica",
-    title: "Yasmim Bueno | Psicóloga Clínica",
-    description:
-      "Psicóloga Clínica especializada em Terapia de Aceitação e Compromisso (ACT). Atendimento online e presencial.",
-    images: [
-      {
-        url: "/og-image.jpg",
-        width: 1200,
-        height: 630,
-        alt: "Yasmim Bueno - Psicóloga Clínica",
-      },
-    ],
+    title: PAGE_TITLE,
+    description: PAGE_DESCRIPTION,
   },
   twitter: {
-    card: "summary_large_image",
-    title: "Yasmim Bueno | Psicóloga Clínica",
-    description:
-      "Psicóloga Clínica especializada em Terapia de Aceitação e Compromisso (ACT).",
+    card: "summary",
+    title: PAGE_TITLE,
+    description: PAGE_DESCRIPTION,
   },
   robots: {
     index: true,

@@ -55,6 +55,8 @@ fourth project, `structure`, runs the assertions a picture cannot make
 | --- | --- |
 | The document does not scroll sideways at 1440, 1024, 768, 414, 390 and 360 | The most likely responsive regression, and the one a full-page screenshot hides. The hero's absolutely positioned circles are the known risk |
 | The page requests nothing from off the machine | Determinism. A page that reaches the network is a page whose pixels someone else gets a vote on |
+| The structured data carries the real practice details, approaches and offered services without invented business data | Search engines consume the rendered JSON-LD rather than anything a screenshot can show |
+| The title, description, keywords, OpenGraph and Twitter tags describe the redesigned practice without referencing a missing preview image | Shared links and search results depend on document-head content that has no visible pixels |
 | The floating WhatsApp button carries the drafted wa.me URL and opens in a new tab | Every CTA is meant to lead to the same conversation; a screenshot cannot read an `href` |
 | Every wa.me link on the page carries that same URL and target | The same, held to every CTA as the sections that carry one land |
 | The hero exposes its headline, registration, availability, portrait, WhatsApp target and services target | The pixels cannot prove copy, accessible names or link destinations |

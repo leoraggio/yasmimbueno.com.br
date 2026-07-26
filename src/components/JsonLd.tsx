@@ -1,49 +1,58 @@
 export function JsonLd() {
   const structuredData = {
     "@context": "https://schema.org",
-    "@type": "LocalBusiness",
+    "@type": "ProfessionalService",
     "@id": "https://yasmimbueno.com.br",
     name: "Yasmim Bueno - Psicóloga Clínica",
     description:
-      "Psicóloga Clínica especializada em Terapia de Aceitação e Compromisso (ACT). Atendimento online e presencial.",
+      "Psicóloga clínica especializada em Terapia de Aceitação e Compromisso (ACT) e Terapia Comportamental Dialética (DBT), com psicoterapia individual para adultos, online e presencial em Alphaville.",
     url: "https://yasmimbueno.com.br",
-    telephone: "+55-11-99999-0123",
-    email: "ola@yasmimbueno.com.br",
+    telephone: "+55-11-94304-6621",
+    email: "contato@yasmimbueno.com.br",
     address: {
       "@type": "PostalAddress",
-      streetAddress: "Av. Bem-Estar, 123, Sala 400",
-      addressLocality: "São Paulo",
+      streetAddress: "Alameda Grajaú, 98, 18º andar",
+      addressLocality: "Barueri",
       addressRegion: "SP",
       addressCountry: "BR",
     },
-    geo: {
-      "@type": "GeoCoordinates",
-      latitude: -23.5505,
-      longitude: -46.6333,
-    },
-    image: "https://yasmimbueno.com.br/og-image.jpg",
-    priceRange: "$$",
-    openingHours: "Mo-Fr 09:00-18:00",
     sameAs: [
-      "https://www.instagram.com/yasmimbueno",
-      "https://www.linkedin.com/in/yasmimbueno",
+      "https://instagram.com/yasmimbueno.psi",
+      "https://linkedin.com/in/yasmim-bueno-720720187",
     ],
     founder: {
       "@type": "Person",
       name: "Yasmim Bueno",
       jobTitle: "Psicóloga Clínica",
       description:
-        "Pós-graduada em Psicologia Clínica pela PUC-RS, especializada em Terapia de Aceitação e Compromisso (ACT).",
+        "Pós-graduada em Psicologia Clínica pela PUC-RS, especializada em Terapias Contextuais, Terapia de Aceitação e Compromisso (ACT) e Terapia Comportamental Dialética (DBT).",
     },
     areaServed: {
       "@type": "Country",
       name: "Brasil",
     },
-    serviceType: [
-      "Psicoterapia Individual",
-      "Terapia de Aceitação e Compromisso",
-      "Atendimento Online",
-      "Mentoria para Psicólogos",
+    makesOffer: [
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          serviceType: "Psicoterapia individual para adultos",
+        },
+      },
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          serviceType: "Atendimento psicológico online",
+        },
+      },
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          serviceType: "Atendimento psicológico presencial em Alphaville",
+        },
+      },
     ],
   };
 

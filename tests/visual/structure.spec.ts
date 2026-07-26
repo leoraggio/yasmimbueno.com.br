@@ -61,6 +61,113 @@ test("the page requests nothing from off the machine", async ({ page }) => {
   expect(external).toEqual([]);
 });
 
+test("structured data describes Yasmim's real practice", async ({
+  page,
+}, testInfo) => {
+  await openSettled(page, "/", testInfo);
+
+  const jsonLd = JSON.parse(
+    (await page.locator('script[type="application/ld+json"]').textContent()) ??
+      "null",
+  );
+
+  expect(jsonLd).toMatchObject({
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    name: "Yasmim Bueno - Psicóloga Clínica",
+    description:
+      "Psicóloga clínica especializada em Terapia de Aceitação e Compromisso (ACT) e Terapia Comportamental Dialética (DBT), com psicoterapia individual para adultos, online e presencial em Alphaville.",
+    telephone: "+55-11-94304-6621",
+    email: "contato@yasmimbueno.com.br",
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: "Alameda Grajaú, 98, 18º andar",
+      addressLocality: "Barueri",
+      addressRegion: "SP",
+      addressCountry: "BR",
+    },
+    makesOffer: [
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          serviceType: "Psicoterapia individual para adultos",
+        },
+      },
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          serviceType: "Atendimento psicológico online",
+        },
+      },
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          serviceType: "Atendimento psicológico presencial em Alphaville",
+        },
+      },
+    ],
+  });
+  expect(jsonLd).not.toHaveProperty("serviceType");
+  expect(jsonLd).not.toHaveProperty("geo");
+  expect(jsonLd).not.toHaveProperty("image");
+  expect(jsonLd).not.toHaveProperty("openingHours");
+  expect(jsonLd).not.toHaveProperty("priceRange");
+});
+
+test("document metadata describes the redesigned practice without a missing preview image", async ({
+  page,
+}, testInfo) => {
+  await openSettled(page, "/", testInfo);
+
+  const title = "Yasmim Bueno | Psicóloga Clínica em Alphaville e Online";
+  const description =
+    "Psicoterapia individual para adultos, online e em Alphaville, com Yasmim Bueno, psicóloga clínica especializada em ACT e DBT.";
+  const keywords = [
+    "psicóloga clínica",
+    "psicoterapia individual",
+    "psicóloga em Alphaville",
+    "psicóloga online",
+    "terapia para adultos",
+    "ACT",
+    "Terapia de Aceitação e Compromisso",
+    "DBT",
+    "Terapia Comportamental Dialética",
+  ].join(",");
+
+  await expect(page).toHaveTitle(title);
+  await expect(page.locator('meta[name="description"]')).toHaveAttribute(
+    "content",
+    description,
+  );
+  await expect(page.locator('meta[name="keywords"]')).toHaveAttribute(
+    "content",
+    keywords,
+  );
+  await expect(page.locator('meta[property="og:title"]')).toHaveAttribute(
+    "content",
+    title,
+  );
+  await expect(
+    page.locator('meta[property="og:description"]'),
+  ).toHaveAttribute("content", description);
+  await expect(page.locator('meta[name="twitter:card"]')).toHaveAttribute(
+    "content",
+    "summary",
+  );
+  await expect(page.locator('meta[name="twitter:title"]')).toHaveAttribute(
+    "content",
+    title,
+  );
+  await expect(
+    page.locator('meta[name="twitter:description"]'),
+  ).toHaveAttribute("content", description);
+  await expect(page.locator('meta[property="og:image"]')).toHaveCount(0);
+  await expect(page.locator('meta[name="twitter:image"]')).toHaveCount(0);
+});
+
 /*
  * One number and one greeting, built in one place, so no call site can drift.
  * The URL is spelled out here rather than imported from the app: the test's
