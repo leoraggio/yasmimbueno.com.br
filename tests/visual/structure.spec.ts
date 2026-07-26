@@ -496,6 +496,129 @@ test("the quote gives Steven C. Hayes's words their own revealed field", async (
   await expect(quoteSection.locator(":scope > [data-revealed]")).toHaveCount(1);
 });
 
+const FAQ_ITEMS = [
+  {
+    question: "Quanto tempo dura uma sessão?",
+    answer:
+      "As sessões individuais duram cerca de 50 minutos, semanalmente.",
+  },
+  {
+    question: "A terapia é confidencial?",
+    answer:
+      "Sim. O sigilo é um pilar da prática psicológica e está no código de ética profissional. O que conversamos fica entre nós, com as poucas exceções legais que combinamos já no nosso primeiro encontro.",
+  },
+  {
+    question: "Você atende por convênio?",
+    answer:
+      "Os atendimentos são particulares. Ofereço a nota fiscal e toda a documentação necessária para que você solicite o reembolso junto à sua operadora de saúde.",
+  },
+  {
+    question: "Quanto tempo dura o tratamento",
+    answer:
+      "A duração varia de pessoa para pessoa, depende da sua demanda, dos seus objetivos terapêuticos e do seu ritmo. Avaliamos juntos, ao longo do caminho, o que faz sentido para você.",
+  },
+  {
+    question: "Qual público você atende?",
+    answer:
+      "Atendo somente o público adulto. Se você busca atendimento para crianças ou adolescentes, posso indicar colegas de confiança.",
+  },
+] as const;
+
+test("the FAQ answers all five objections with independent disclosures", async ({
+  page,
+}, testInfo) => {
+  await openSettled(page, "/", testInfo);
+
+  const faq = page.getByRole("region", { name: "Antes de começarmos" });
+  const disclosures = faq.locator("details");
+
+  await expect(
+    faq.getByText("Dúvidas frequentes", { exact: true }),
+  ).toBeVisible();
+  await expect(disclosures).toHaveCount(FAQ_ITEMS.length);
+  await expect(faq.locator(":scope > [data-revealed]")).toHaveCount(2);
+
+  for (const [index, item] of FAQ_ITEMS.entries()) {
+    const disclosure = disclosures.nth(index);
+
+    await expect(
+      disclosure.getByText(item.question, { exact: true }),
+    ).toBeVisible();
+    await expect(disclosure.getByText(item.answer, { exact: true })).toBeHidden();
+  }
+
+  await disclosures.nth(0).locator("summary").click();
+  await disclosures.nth(1).locator("summary").click();
+
+  await expect(disclosures.nth(0)).toHaveJSProperty("open", true);
+  await expect(disclosures.nth(1)).toHaveJSProperty("open", true);
+
+  await disclosures.nth(0).locator("summary").click();
+
+  await expect(disclosures.nth(0)).toHaveJSProperty("open", false);
+  await expect(disclosures.nth(1)).toHaveJSProperty("open", true);
+});
+
+test("the FAQ content is available without JavaScript", async ({
+  browser,
+}, testInfo) => {
+  const context = await browser.newContext({
+    baseURL: testInfo.project.use.baseURL as string,
+    javaScriptEnabled: false,
+    reducedMotion: "no-preference",
+  });
+  const page = await context.newPage();
+
+  await page.goto("/", { waitUntil: "load" });
+
+  const faq = page.getByRole("region", { name: "Antes de começarmos" });
+  const revealTargets = faq.locator(":scope > [data-revealed]");
+  const firstDisclosure = faq.locator("details").first();
+
+  await expect(revealTargets).toHaveCount(2);
+  for (const target of await revealTargets.all()) {
+    await expect(target).toHaveCSS("opacity", "1");
+  }
+  await expect(firstDisclosure).toBeVisible();
+  await firstDisclosure.locator("summary").click();
+  await expect(
+    firstDisclosure.getByText(FAQ_ITEMS[0].answer, { exact: true }),
+  ).toBeVisible();
+
+  await context.close();
+});
+
+test("a wrapped phone FAQ question keeps its plus on the first line", async ({
+  page,
+}, testInfo) => {
+  await page.setViewportSize({ width: 360, height: 844 });
+
+  await openSettled(page, "/", testInfo);
+
+  const summary = page
+    .getByRole("region", { name: "Antes de começarmos" })
+    .locator("details")
+    .nth(3)
+    .locator("summary");
+  const question = summary.getByText(FAQ_ITEMS[3].question, { exact: true });
+  const plus = summary.locator('[aria-hidden="true"]');
+
+  const [questionBox, plusBox, questionLines] = await Promise.all([
+    question.boundingBox(),
+    plus.boundingBox(),
+    question.evaluate((element) => {
+      const range = document.createRange();
+      range.selectNodeContents(element);
+      return range.getClientRects().length;
+    }),
+  ]);
+
+  expect(questionBox).not.toBeNull();
+  expect(plusBox).not.toBeNull();
+  expect(questionLines).toBeGreaterThan(1);
+  expect(Math.abs(questionBox!.y - plusBox!.y)).toBeLessThanOrEqual(1);
+});
+
 test("the lockup leads to the top of the page", async ({ page }, testInfo) => {
   await openSettled(page, "/", testInfo);
 

@@ -1,5 +1,6 @@
 import { About } from "@/components/About";
 import { Approach } from "@/components/Approach";
+import { Faq } from "@/components/Faq";
 import { FarolDivider } from "@/components/FarolDivider";
 import { FloatingWhatsApp } from "@/components/FloatingWhatsApp";
 import { Hero } from "@/components/Hero";
@@ -23,6 +24,7 @@ export default function Home() {
         <Approach />
         <Services />
         <Quote />
+        <Faq />
       </main>
       <FloatingWhatsApp />
     </>

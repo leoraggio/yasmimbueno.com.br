@@ -100,4 +100,12 @@
       transition: none;
     }
   }
+
+  @media (scripting: none) {
+    [data-revealed] {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
 }
