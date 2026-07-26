@@ -104,7 +104,6 @@ export async function settle(page: Page) {
     ),
   );
 
-  /* Two frames, so the layout the browser computed is the one it has drawn. */
   await nextPaint(page);
 }
 
@@ -156,7 +155,12 @@ async function loadLazyContent(page: Page) {
   });
 }
 
-function nextPaint(page: Page) {
+/**
+ * Two animation frames, so the layout the browser computed is the one it has
+ * drawn. Exported for the assertions that have to give the page a chance to
+ * react before deciding that it did not.
+ */
+export function nextPaint(page: Page) {
   return page.evaluate(
     () =>
       new Promise<void>((resolve) => {

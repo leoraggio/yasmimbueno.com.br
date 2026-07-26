@@ -56,6 +56,12 @@ fourth project, `structure`, runs the assertions a picture cannot make
 | The document does not scroll sideways at 1440, 1024, 768, 414, 390 and 360 | The most likely responsive regression, and the one a full-page screenshot hides. The hero's absolutely positioned circles are the known risk |
 | The page requests nothing from off the machine | Determinism. A page that reaches the network is a page whose pixels someone else gets a vote on |
 | The floating WhatsApp button carries the drafted wa.me URL and opens in a new tab | Every CTA is meant to lead to the same conversation; a screenshot cannot read an `href` |
+| Every wa.me link on the page carries that same URL and target | The same, held to every CTA as the sections that carry one land |
+| The lockup points at `#top`, and `#top` exists | The one anchor the nav owns. The four section links deliberately dangle until their sections land |
+| At 1024 the link row is in the bar; below it the row is hidden, the menu control is there, and the logo and booking pill are still visible | The collapse rule is prose in issue #1 rather than something the mock drew, so it is asserted rather than left to the phone baseline to ratify |
+| The menu panel opens on the control, closes on a link and on Escape, and Escape returns focus to the control | Behaviour a picture cannot show at all |
+| The page behind the open panel does not scroll, and scrolls again once it closes | Both halves matter: the second is what stops the first passing because nothing scrolled either way |
+| Every visible link and button is at least 44×44 at 390 wide, panel open and closed | The touch-target floor, checked where it applies |
 
 It is a project rather than another spec in the viewport projects because each
 of its tests sets the width it cares about — without the split it would run
@@ -166,10 +172,11 @@ to run Linux x64.
 
 ## Scope
 
-Right now the baselines are of the **stripped shell** — a cream field with the
-floating WhatsApp button in the corner and nothing else on it (issue #4). As the
-landing page is rebuilt section by section, each task updates these baselines as
-part of its own change, and the picture fills in.
+Right now the baselines are of the **nav over the stripped shell** — the sticky
+bar (issue #5) above a cream field with the floating WhatsApp button in the
+corner and nothing else on it (issue #4). As the landing page is rebuilt section
+by section, each task updates these baselines as part of its own change, and the
+picture fills in.
 
 Issue #15 replaces the desktop baseline with one derived from the design mock,
 at which point `desktop-1440` becomes the parity gate. The tablet and phone
