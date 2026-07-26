@@ -111,16 +111,16 @@ export function NavMenu({
       {open && (
         <div
           id={PANEL_ID}
-          className="absolute inset-x-0 top-full mt-px border-b border-hairline bg-cream/92 backdrop-blur-[8px] lg:hidden"
+          className="absolute inset-x-0 top-full mt-px border-b border-hairline bg-cream/92 backdrop-blur-sm lg:hidden"
         >
           <nav aria-label="Seções">
-            <ul className="mx-auto flex max-w-[1180px] flex-col px-5 py-2 md:px-8">
+            <ul className="mx-auto flex max-w-295 flex-col px-5 py-2 md:px-8">
               {links.map(({ href, label }) => (
                 <li key={href}>
                   <a
                     href={href}
                     onClick={() => setOpen(false)}
-                    className="flex min-h-[48px] items-center font-subtitle text-[15px] text-navy-deep hover:text-ocean-blue"
+                    className="flex min-h-12 items-center font-subtitle text-[15px] text-navy-deep hover:text-ocean-blue"
                   >
                     {label}
                   </a>
