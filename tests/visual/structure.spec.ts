@@ -259,6 +259,59 @@ test("the phone about layout leads with a capped portrait and steps down the far
   expect(farolBox!.width).toBe(84);
 });
 
+test("the approach section presents ACT and DBT as complementary practices", async ({
+  page,
+}, testInfo) => {
+  await openSettled(page, "/", testInfo);
+
+  const approach = page.getByRole("region", {
+    name: "Entre aceitar e mudar, existe um caminho",
+  });
+
+  await expect(
+    approach.getByText("Minha metodologia", { exact: true }),
+  ).toBeVisible();
+  await expect(
+    approach.getByText(
+      "A vida não para enquanto você resolve seus problemas: ela acontece com eles. Por isso trabalho com duas abordagens que se complementam: uma ensina a acolher, a outra ensina a agir.",
+      { exact: true },
+    ),
+  ).toBeVisible();
+  await expect(
+    approach.getByRole("heading", {
+      level: 3,
+      name: "ACT Terapia de Aceitação e Compromisso",
+    }),
+  ).toBeVisible();
+  await expect(
+    approach.getByText(
+      "Aqui, o objetivo não é eliminar a dor, mas mudar a relação com ela. Você aprende a dar espaço ao que sente e a se guiar pelos seus valores, como um farol que orienta, mesmo em mar agitado.",
+      { exact: true },
+    ),
+  ).toBeVisible();
+  await expect(
+    approach.getByRole("heading", {
+      level: 3,
+      name: "DBT Terapia Comportamental Dialética",
+    }),
+  ).toBeVisible();
+  await expect(
+    approach.getByText(
+      "Para emoções que chegam como ondas grandes demais. A DBT oferece ferramentas práticas para atravessar crises, reduzir comportamentos impulsivos e construir relações mais estáveis.",
+      { exact: true },
+    ),
+  ).toBeVisible();
+  expect(await approach.getByRole("listitem").allTextContents()).toEqual([
+    "Aceitação",
+    "Valores",
+    "Ação com compromisso",
+    "Atenção plena",
+    "Regulação emocional",
+    "Tolerância ao mal-estar",
+    "Efetividade interpessoal",
+  ]);
+});
+
 test("the lockup leads to the top of the page", async ({ page }, testInfo) => {
   await openSettled(page, "/", testInfo);
 

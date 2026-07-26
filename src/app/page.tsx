@@ -1,4 +1,5 @@
 import { About } from "@/components/About";
+import { Approach } from "@/components/Approach";
 import { FarolDivider } from "@/components/FarolDivider";
 import { FloatingWhatsApp } from "@/components/FloatingWhatsApp";
 import { Hero } from "@/components/Hero";
@@ -17,6 +18,7 @@ export default function Home() {
         <Hero />
         <About />
         <FarolDivider />
+        <Approach />
       </main>
       <FloatingWhatsApp />
     </>

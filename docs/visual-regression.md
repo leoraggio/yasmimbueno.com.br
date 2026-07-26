@@ -62,6 +62,7 @@ fourth project, `structure`, runs the assertions a picture cannot make
 | At 1024 the hero headline keeps its designed two lines | The narrowest desktop grid must not turn its two explicit lines into four |
 | The Sobre section exposes its exact clinical introduction, emphasized therapy names, credentials and specialization chips | The pixels cannot prove exact copy, emphasis or the non-breaking spaces that bind chip names to their attributions |
 | At 390 the Sobre portrait leads without exceeding its cap, credentials stack label-over-value and the divider farol is 84px | Responsive order and hard dimensions are more precise as measurements than visual estimates |
+| The Abordagem section exposes its exact framing and clinical copy, both expanded approach names and all seven skill chips | The pixels cannot prove the clinical language is verbatim or that the visual labels have useful heading and list semantics |
 | The lockup points at `#top`, and `#top` exists | The one anchor the nav owns. The four section links deliberately dangle until their sections land |
 | At 1024 the link row is in the bar; below it the row is hidden, the menu control is there, and the logo and booking pill are still visible | The collapse rule is prose in issue #1 rather than something the mock drew, so it is asserted rather than left to the phone baseline to ratify |
 | The menu panel opens on the control, closes on a link and on Escape, and Escape returns focus to the control | Behaviour a picture cannot show at all |
@@ -178,10 +179,10 @@ to run Linux x64.
 ## Scope
 
 Right now the baselines cover the shell and the first rebuilt page sections:
-the floating WhatsApp control (issue #4), nav (issue #5), Hero (issue #6), and
-Sobre with its farol divider (issue #7). As the landing page is rebuilt section
-by section, each task updates these baselines as part of its own change, and the
-picture fills in.
+the floating WhatsApp control (issue #4), nav (issue #5), Hero (issue #6),
+Sobre with its farol divider (issue #7), and Abordagem (issue #8). As the
+landing page is rebuilt section by section, each task updates these baselines as
+part of its own change, and the picture fills in.
 
 Issue #15 replaces the desktop baseline with one derived from the design mock,
 at which point `desktop-1440` becomes the parity gate. The tablet and phone
