@@ -31,7 +31,7 @@ export function About() {
         <div className="relative mx-auto w-full max-w-lg lg:max-w-none">
           <div
             aria-hidden="true"
-            className="absolute inset-0 translate-3 rounded-3xl border border-slate-blue/50"
+            className="absolute inset-0 rounded-3xl border border-slate-blue/50"
           />
           <div className="relative z-1 h-[min(112vw,28rem)] overflow-hidden rounded-3xl shadow-[0_16px_40px_rgba(13,42,74,.16)] lg:h-auto">
             <Image

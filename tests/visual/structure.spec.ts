@@ -221,7 +221,7 @@ test("the about section presents Yasmim's clinical introduction and credentials"
   ]);
 });
 
-test("the phone about layout leads with a capped portrait and steps down the farol", async ({
+test("the phone about layout keeps the portrait aligned and capped and steps down the farol", async ({
   page,
 }, testInfo) => {
   await page.setViewportSize({ width: 390, height: 844 });
@@ -230,6 +230,9 @@ test("the phone about layout leads with a capped portrait and steps down the far
 
   const about = page.getByRole("region", { name: "Olá, sou a Yasmim." });
   const portrait = about.getByRole("img", { name: "Yasmim Bueno" });
+  const portraitFrame = portrait.locator(
+    "xpath=../preceding-sibling::*[@aria-hidden='true']",
+  );
   const heading = about.getByRole("heading", { level: 2 });
   const formation = about.getByText("Formação", { exact: true });
   const formationValue = about.getByText(
@@ -238,22 +241,31 @@ test("the phone about layout leads with a capped portrait and steps down the far
   );
   const farol = page.getByRole("separator", { name: "Farol" }).locator("img");
 
-  const [portraitBox, headingBox, formationBox, formationValueBox, farolBox] =
-    await Promise.all([
-      portrait.boundingBox(),
-      heading.boundingBox(),
-      formation.boundingBox(),
-      formationValue.boundingBox(),
-      farol.boundingBox(),
-    ]);
+  const [
+    portraitBox,
+    portraitFrameBox,
+    headingBox,
+    formationBox,
+    formationValueBox,
+    farolBox,
+  ] = await Promise.all([
+    portrait.boundingBox(),
+    portraitFrame.boundingBox(),
+    heading.boundingBox(),
+    formation.boundingBox(),
+    formationValue.boundingBox(),
+    farol.boundingBox(),
+  ]);
 
   expect(portraitBox).not.toBeNull();
+  expect(portraitFrameBox).not.toBeNull();
   expect(headingBox).not.toBeNull();
   expect(formationBox).not.toBeNull();
   expect(formationValueBox).not.toBeNull();
   expect(farolBox).not.toBeNull();
   expect(portraitBox!.y).toBeLessThan(headingBox!.y);
   expect(portraitBox!.height).toBeLessThanOrEqual(448);
+  expect(portraitFrameBox).toEqual(portraitBox);
   expect(formationBox!.y).toBeLessThan(formationValueBox!.y);
   expect(formationBox!.x).toBe(formationValueBox!.x);
   expect(farolBox!.width).toBe(84);
