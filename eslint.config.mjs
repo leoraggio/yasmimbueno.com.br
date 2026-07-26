@@ -27,6 +27,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Authoritative local design-tool export, kept outside the application.
+    "design/**",
     // Playwright's own run output — a bundled report viewer, not our code.
     "playwright-report/**",
     "test-results/**",

@@ -95,6 +95,83 @@ test("every WhatsApp CTA leads to the same drafted conversation", async ({
   }
 });
 
+test("the hero presents Yasmim and both ways forward", async ({
+  page,
+}, testInfo) => {
+  await openSettled(page, "/", testInfo);
+
+  const hero = page.getByRole("region", {
+    name: "Espaço para sentir. Liberdade para ser.",
+  });
+
+  await expect(
+    hero.getByRole("heading", {
+      level: 1,
+      name: "Espaço para sentir. Liberdade para ser.",
+    }),
+  ).toBeVisible();
+  await expect(
+    hero.getByText("Psicóloga clínica · CRP 06/200958"),
+  ).toBeVisible();
+  await expect(hero.getByText("Online e Presencial")).toBeVisible();
+  await expect(hero.getByRole("img", { name: "Yasmim Bueno" })).toBeVisible();
+
+  await expect(
+    hero.getByRole("link", { name: "Agendar pelo WhatsApp" }),
+  ).toHaveAttribute("href", WHATSAPP_URL);
+  await expect(
+    hero.getByRole("link", { name: "Conheça os serviços" }),
+  ).toHaveAttribute("href", "#servicos");
+});
+
+test("the phone hero keeps copy before the portrait and stacks full-width actions", async ({
+  page,
+}, testInfo) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+
+  await openSettled(page, "/", testInfo);
+
+  const hero = page.getByRole("region", {
+    name: "Espaço para sentir. Liberdade para ser.",
+  });
+  const heading = hero.getByRole("heading", { level: 1 });
+  const portrait = hero.getByRole("img", { name: "Yasmim Bueno" });
+  const primary = hero.getByRole("link", { name: "Agendar pelo WhatsApp" });
+  const secondary = hero.getByRole("link", { name: "Conheça os serviços" });
+
+  const [headingBox, portraitBox, primaryBox, secondaryBox] = await Promise.all([
+    heading.boundingBox(),
+    portrait.boundingBox(),
+    primary.boundingBox(),
+    secondary.boundingBox(),
+  ]);
+
+  expect(headingBox).not.toBeNull();
+  expect(portraitBox).not.toBeNull();
+  expect(primaryBox).not.toBeNull();
+  expect(secondaryBox).not.toBeNull();
+  expect(headingBox!.y).toBeLessThan(portraitBox!.y);
+  expect(primaryBox!.y).toBeLessThan(secondaryBox!.y);
+  expect(primaryBox!.width).toBe(secondaryBox!.width);
+});
+
+test("the desktop breakpoint keeps the hero headline on two lines", async ({
+  page,
+}, testInfo) => {
+  await page.setViewportSize({ width: 1024, height: 768 });
+
+  await openSettled(page, "/", testInfo);
+
+  const lines = await page
+    .getByRole("heading", { level: 1 })
+    .evaluate((heading) => {
+      const lineHeight = Number.parseFloat(getComputedStyle(heading).lineHeight);
+      return Math.round(heading.getBoundingClientRect().height / lineHeight);
+    });
+
+  expect(lines).toBe(2);
+});
+
 test("the lockup leads to the top of the page", async ({ page }, testInfo) => {
   await openSettled(page, "/", testInfo);
 
@@ -126,7 +203,11 @@ test.describe("below 1024", () => {
 
     await expect(page.getByRole("link", { name: "Sobre" })).toBeHidden();
     await expect(page.getByRole("button", { name: "Menu" })).toBeVisible();
-    await expect(page.getByRole("img", { name: "Yasmim Bueno" })).toBeVisible();
+    await expect(
+      page
+        .getByRole("link", { name: "Yasmim Bueno" })
+        .getByRole("img", { name: "Yasmim Bueno" }),
+    ).toBeVisible();
     await expect(
       page.getByRole("link", { name: "Agendar Atendimento" }),
     ).toBeVisible();

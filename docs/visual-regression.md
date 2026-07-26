@@ -57,6 +57,9 @@ fourth project, `structure`, runs the assertions a picture cannot make
 | The page requests nothing from off the machine | Determinism. A page that reaches the network is a page whose pixels someone else gets a vote on |
 | The floating WhatsApp button carries the drafted wa.me URL and opens in a new tab | Every CTA is meant to lead to the same conversation; a screenshot cannot read an `href` |
 | Every wa.me link on the page carries that same URL and target | The same, held to every CTA as the sections that carry one land |
+| The hero exposes its headline, registration, availability, portrait, WhatsApp target and services target | The pixels cannot prove copy, accessible names or link destinations |
+| At 390 the hero keeps copy before the portrait and stacks equal-width actions, primary first | The authored phone composition should stay intact as later sections lengthen the page |
+| At 1024 the hero headline keeps its designed two lines | The narrowest desktop grid must not turn its two explicit lines into four |
 | The lockup points at `#top`, and `#top` exists | The one anchor the nav owns. The four section links deliberately dangle until their sections land |
 | At 1024 the link row is in the bar; below it the row is hidden, the menu control is there, and the logo and booking pill are still visible | The collapse rule is prose in issue #1 rather than something the mock drew, so it is asserted rather than left to the phone baseline to ratify |
 | The menu panel opens on the control, closes on a link and on Escape, and Escape returns focus to the control | Behaviour a picture cannot show at all |
