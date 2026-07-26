@@ -60,6 +60,8 @@ fourth project, `structure`, runs the assertions a picture cannot make
 | The hero exposes its headline, registration, availability, portrait, WhatsApp target and services target | The pixels cannot prove copy, accessible names or link destinations |
 | At 390 the hero keeps copy before the portrait and stacks equal-width actions, primary first | The authored phone composition should stay intact as later sections lengthen the page |
 | At 1024 the hero headline keeps its designed two lines | The narrowest desktop grid must not turn its two explicit lines into four |
+| The Sobre section exposes its exact clinical introduction, emphasized therapy names, credentials and specialization chips | The pixels cannot prove exact copy, emphasis or the non-breaking spaces that bind chip names to their attributions |
+| At 390 the Sobre portrait leads without exceeding its cap, credentials stack label-over-value and the divider farol is 84px | Responsive order and hard dimensions are more precise as measurements than visual estimates |
 | The lockup points at `#top`, and `#top` exists | The one anchor the nav owns. The four section links deliberately dangle until their sections land |
 | At 1024 the link row is in the bar; below it the row is hidden, the menu control is there, and the logo and booking pill are still visible | The collapse rule is prose in issue #1 rather than something the mock drew, so it is asserted rather than left to the phone baseline to ratify |
 | The menu panel opens on the control, closes on a link and on Escape, and Escape returns focus to the control | Behaviour a picture cannot show at all |
@@ -175,9 +177,9 @@ to run Linux x64.
 
 ## Scope
 
-Right now the baselines are of the **nav over the stripped shell** — the sticky
-bar (issue #5) above a cream field with the floating WhatsApp button in the
-corner and nothing else on it (issue #4). As the landing page is rebuilt section
+Right now the baselines cover the shell and the first rebuilt page sections:
+the floating WhatsApp control (issue #4), nav (issue #5), Hero (issue #6), and
+Sobre with its farol divider (issue #7). As the landing page is rebuilt section
 by section, each task updates these baselines as part of its own change, and the
 picture fills in.
 

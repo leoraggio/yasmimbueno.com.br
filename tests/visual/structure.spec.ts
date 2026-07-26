@@ -172,6 +172,93 @@ test("the desktop breakpoint keeps the hero headline on two lines", async ({
   expect(lines).toBe(2);
 });
 
+test("the about section presents Yasmim's clinical introduction and credentials", async ({
+  page,
+}, testInfo) => {
+  await openSettled(page, "/", testInfo);
+
+  const about = page.getByRole("region", { name: "Olá, sou a Yasmim." });
+
+  await expect(
+    about.getByRole("heading", { level: 2, name: "Olá, sou a Yasmim." }),
+  ).toBeVisible();
+  await expect(about.getByRole("img", { name: "Yasmim Bueno" })).toBeVisible();
+  await expect(
+    about.getByText(
+      "Sou psicóloga, pós-graduada em Psicologia Clínica pela PUC-RS e especializada em Terapias Contextuais. Acredito que a terapia é um espaço de acolhimento e transformação. Atendo adultos que vivem emoções intensas, momentos de crise ou oscilações de humor, que têm desafios de atenção e foco ou dificuldade em gerenciar a rotina, e mulheres que enfrentam sobrecarga e autocobrança no dia a dia.",
+      { exact: true },
+    ),
+  ).toBeVisible();
+  await expect(
+    about.getByText(
+      "Dedico meu aprimoramento contínuo à Terapia de Aceitação e Compromisso (ACT) e à Terapia Comportamental Dialética (DBT). São abordagens que unem aceitação e mudança: em vez de lutar contra o que você sente, desenvolvemos habilidades para lidar com as emoções e agir na direção dos seus valores, construindo uma vida que vale a pena ser vivida.",
+      { exact: true },
+    ),
+  ).toBeVisible();
+  await expect(about.getByText("Formação", { exact: true })).toBeVisible();
+  await expect(
+    about.getByText("Especializações", { exact: true }),
+  ).toBeVisible();
+  await expect(
+    about.getByText("Pós Graduação em Psicologia Clínica · PUC-RS", {
+      exact: true,
+    }),
+  ).toBeVisible();
+  await expect(
+    about.getByText("Pós Graduação em Terapias Contextuais · Wainer", {
+      exact: true,
+    }),
+  ).toBeVisible();
+  await expect(about.locator("em")).toHaveText([
+    "Terapia de Aceitação e Compromisso (ACT)",
+    "Terapia Comportamental Dialética (DBT)",
+  ]);
+  expect(await about.getByRole("listitem").allTextContents()).toEqual([
+    "Terapia de Aceitação e Compromisso\u00a0· Dr. Steven C. Hayes (Artmed)",
+    "Terapia Comportamental Dialética\u00a0· Por dentro da DBT",
+    "Psicoterapia da Depressão e do Transtorno Bipolar\u00a0· Curt Hemanny",
+    "Psicoterapias para Prevenção do Suicídio\u00a0· Craig Bryan (USP)",
+  ]);
+});
+
+test("the phone about layout leads with a capped portrait and steps down the farol", async ({
+  page,
+}, testInfo) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+
+  await openSettled(page, "/", testInfo);
+
+  const about = page.getByRole("region", { name: "Olá, sou a Yasmim." });
+  const portrait = about.getByRole("img", { name: "Yasmim Bueno" });
+  const heading = about.getByRole("heading", { level: 2 });
+  const formation = about.getByText("Formação", { exact: true });
+  const formationValue = about.getByText(
+    "Pós Graduação em Psicologia Clínica · PUC-RS",
+    { exact: true },
+  );
+  const farol = page.getByRole("separator", { name: "Farol" }).locator("img");
+
+  const [portraitBox, headingBox, formationBox, formationValueBox, farolBox] =
+    await Promise.all([
+      portrait.boundingBox(),
+      heading.boundingBox(),
+      formation.boundingBox(),
+      formationValue.boundingBox(),
+      farol.boundingBox(),
+    ]);
+
+  expect(portraitBox).not.toBeNull();
+  expect(headingBox).not.toBeNull();
+  expect(formationBox).not.toBeNull();
+  expect(formationValueBox).not.toBeNull();
+  expect(farolBox).not.toBeNull();
+  expect(portraitBox!.y).toBeLessThan(headingBox!.y);
+  expect(portraitBox!.height).toBeLessThanOrEqual(448);
+  expect(formationBox!.y).toBeLessThan(formationValueBox!.y);
+  expect(formationBox!.x).toBe(formationValueBox!.x);
+  expect(farolBox!.width).toBe(84);
+});
+
 test("the lockup leads to the top of the page", async ({ page }, testInfo) => {
   await openSettled(page, "/", testInfo);
 

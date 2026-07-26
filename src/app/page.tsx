@@ -1,3 +1,5 @@
+import { About } from "@/components/About";
+import { FarolDivider } from "@/components/FarolDivider";
 import { FloatingWhatsApp } from "@/components/FloatingWhatsApp";
 import { Hero } from "@/components/Hero";
 import { Nav } from "@/components/Nav";
@@ -13,6 +15,8 @@ export default function Home() {
       <Nav />
       <main>
         <Hero />
+        <About />
+        <FarolDivider />
       </main>
       <FloatingWhatsApp />
     </>
