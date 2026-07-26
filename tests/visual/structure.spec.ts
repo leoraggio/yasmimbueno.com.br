@@ -1,4 +1,4 @@
-import { expect, test, type Page } from "@playwright/test";
+import { expect, test, type Locator, type Page } from "@playwright/test";
 import { isExternalUrl, nextPaint, openSettled, settle } from "./settle";
 
 /*
@@ -619,6 +619,195 @@ test("a wrapped phone FAQ question keeps its plus on the first line", async ({
   expect(Math.abs(questionBox!.y - plusBox!.y)).toBeLessThanOrEqual(1);
 });
 
+test("the contact footer presents every direct way to reach Yasmim", async ({
+  page,
+}, testInfo) => {
+  await openSettled(page, "/", testInfo);
+
+  const footer = page.getByRole("contentinfo");
+
+  await expect(
+    footer.getByRole("heading", { level: 2, name: "Entre em contato" }),
+  ).toBeVisible();
+  await expect(
+    footer.getByText(
+      "Escolha o canal que for mais confortável para você, no seu tempo.",
+      { exact: true },
+    ),
+  ).toBeVisible();
+  await expect(
+    footer.getByRole("link", { name: "Agendar pelo WhatsApp" }),
+  ).toHaveAttribute("href", WHATSAPP_URL);
+  await expect(
+    footer.getByText("Alameda Grajaú, 98, 18º andar", { exact: true }),
+  ).toBeVisible();
+  await expect(
+    footer.getByText("Alphaville · Barueri, SP", { exact: true }),
+  ).toBeVisible();
+  await expect(
+    footer.getByRole("link", { name: "contato@yasmimbueno.com.br" }),
+  ).toHaveAttribute("href", "mailto:contato@yasmimbueno.com.br");
+  await expect(
+    footer.getByRole("link", { name: "(11) 94304-6621" }),
+  ).toHaveAttribute("href", "tel:+5511943046621");
+  await expect(
+    footer.getByText(
+      "© 2026 Yasmim Bueno · Psicóloga Clínica · CRP 06/200958",
+      { exact: true },
+    ),
+  ).toBeVisible();
+
+  const instagram = footer.getByRole("link", { name: "Instagram" });
+  const linkedin = footer.getByRole("link", { name: "LinkedIn" });
+
+  await expect(instagram).toHaveAttribute(
+    "href",
+    "https://instagram.com/yasmimbueno",
+  );
+  await expect(instagram).toHaveAttribute("target", "_blank");
+  await expect(linkedin).toHaveAttribute(
+    "href",
+    "https://linkedin.com/in/yasmimbueno",
+  );
+  await expect(linkedin).toHaveAttribute("target", "_blank");
+  await expect(footer.locator(":scope > [data-revealed]")).toHaveCount(1);
+});
+
+test("the desktop contact footer keeps the mock geometry", async ({
+  page,
+}, testInfo) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await openSettled(page, "/", testInfo);
+
+  const faq = page.getByRole("region", { name: "Antes de começarmos" });
+  const footer = page.getByRole("contentinfo");
+  const content = footer.locator(":scope > [data-revealed]");
+  const logo = footer.getByRole("img", { name: "Yasmim Bueno" });
+  const contactItems = footerContactItems(footer);
+  const instagram = footer.getByRole("link", { name: "Instagram" });
+  const instagramCircle = instagram.locator("span");
+
+  const [
+    faqBox,
+    footerBox,
+    contentBox,
+    logoBox,
+    instagramBox,
+    instagramCircleBox,
+    paddingTop,
+  ] = await Promise.all([
+      faq.boundingBox(),
+      footer.boundingBox(),
+      content.boundingBox(),
+      logo.boundingBox(),
+      instagram.boundingBox(),
+      instagramCircle.boundingBox(),
+      footer.evaluate((element) =>
+        Number.parseFloat(getComputedStyle(element).paddingTop),
+      ),
+    ]);
+  const contactBoxes = await Promise.all(
+    contactItems.map((item) => item.boundingBox()),
+  );
+
+  expect(faqBox).not.toBeNull();
+  expect(footerBox).not.toBeNull();
+  expect(contentBox).not.toBeNull();
+  expect(logoBox).not.toBeNull();
+  expect(instagramBox).not.toBeNull();
+  expect(instagramCircleBox).not.toBeNull();
+  expect(contactBoxes.every(Boolean)).toBe(true);
+  expect(footerBox!.y - (faqBox!.y + faqBox!.height)).toBe(96);
+  expect(paddingTop).toBe(76);
+  expect(contentBox!.width).toBe(1180);
+  expect(logoBox!.height).toBe(44);
+  expect(new Set(contactBoxes.map((box) => box!.y)).size).toBe(1);
+  expect(instagramBox!.width).toBe(40);
+  expect(instagramBox!.height).toBe(40);
+  expect(instagramCircleBox!.width).toBe(40);
+  expect(instagramCircleBox!.height).toBe(40);
+});
+
+test("the contact columns and bottom bar stack below the desktop breakpoint", async ({
+  page,
+}, testInfo) => {
+  await page.setViewportSize({ width: 768, height: 1024 });
+  await openSettled(page, "/", testInfo);
+
+  const footer = page.getByRole("contentinfo");
+  const contactItems = footerContactItems(footer);
+  const copyright = footer.getByText(
+    "© 2026 Yasmim Bueno · Psicóloga Clínica · CRP 06/200958",
+    { exact: true },
+  );
+  const socialLinks = footer.getByRole("link", {
+    name: /^(Instagram|LinkedIn)$/,
+  });
+  const socialCircles = socialLinks.locator("span");
+
+  const contactBoxes = await Promise.all(
+    contactItems.map((item) => item.boundingBox()),
+  );
+  const [
+    copyrightBox,
+    firstSocialBox,
+    lastSocialBox,
+    firstCircleBox,
+    lastCircleBox,
+  ] = await Promise.all([
+    copyright.boundingBox(),
+    socialLinks.first().boundingBox(),
+    socialLinks.last().boundingBox(),
+    socialCircles.first().boundingBox(),
+    socialCircles.last().boundingBox(),
+  ]);
+
+  expect(contactBoxes.every(Boolean)).toBe(true);
+  expect(copyrightBox).not.toBeNull();
+  expect(firstSocialBox).not.toBeNull();
+  expect(lastSocialBox).not.toBeNull();
+  expect(firstCircleBox).not.toBeNull();
+  expect(lastCircleBox).not.toBeNull();
+  expect(contactBoxes[0]!.x).toBe(contactBoxes[1]!.x);
+  expect(contactBoxes[1]!.x).toBe(contactBoxes[2]!.x);
+  expect(contactBoxes[0]!.y).toBeLessThan(contactBoxes[1]!.y);
+  expect(contactBoxes[1]!.y).toBeLessThan(contactBoxes[2]!.y);
+  expect(copyrightBox!.y).toBeLessThan(firstSocialBox!.y);
+  expect(
+    Math.round((firstSocialBox!.x + lastSocialBox!.x + lastSocialBox!.width) / 2),
+  ).toBe(384);
+  expect(firstCircleBox!.width).toBe(40);
+  expect(lastCircleBox!.width).toBe(40);
+});
+
+test("the phone WhatsApp control clears the safe area and the footer CTA", async ({
+  page,
+}, testInfo) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await openSettled(page, "/", testInfo);
+  await page.addStyleTag({
+    content: ":root { --safe-area-bottom: 18px !important; }",
+  });
+  await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+  await nextPaint(page);
+
+  const floating = page.getByRole("link", { name: "Fale no WhatsApp" });
+  const footerCta = page
+    .getByRole("contentinfo")
+    .getByRole("link", { name: "Agendar pelo WhatsApp" });
+  const [floatingBox, footerCtaBox] = await Promise.all([
+    floating.boundingBox(),
+    footerCta.boundingBox(),
+  ]);
+
+  expect(floatingBox).not.toBeNull();
+  expect(footerCtaBox).not.toBeNull();
+  expect(
+    Math.round(844 - (floatingBox!.y + floatingBox!.height)),
+  ).toBe(44);
+  expect(rectanglesOverlap(floatingBox!, footerCtaBox!)).toBe(false);
+});
+
 test("the lockup leads to the top of the page", async ({ page }, testInfo) => {
   await openSettled(page, "/", testInfo);
 
@@ -761,4 +950,22 @@ async function undersizedTargets(page: Page) {
         height: Math.round(box.height),
       }));
   });
+}
+
+function rectanglesOverlap(
+  first: { x: number; y: number; width: number; height: number },
+  second: { x: number; y: number; width: number; height: number },
+) {
+  return !(
+    first.x + first.width <= second.x ||
+    second.x + second.width <= first.x ||
+    first.y + first.height <= second.y ||
+    second.y + second.height <= first.y
+  );
+}
+
+function footerContactItems(footer: Locator) {
+  return ["Consultório", "E-mail", "Telefone"].map((label) =>
+    footer.getByText(label, { exact: true }).locator(".."),
+  );
 }

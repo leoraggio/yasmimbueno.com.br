@@ -1,5 +1,6 @@
 import { About } from "@/components/About";
 import { Approach } from "@/components/Approach";
+import { ContactFooter } from "@/components/ContactFooter";
 import { Faq } from "@/components/Faq";
 import { FarolDivider } from "@/components/FarolDivider";
 import { FloatingWhatsApp } from "@/components/FloatingWhatsApp";
@@ -8,11 +9,6 @@ import { Nav } from "@/components/Nav";
 import { Quote } from "@/components/Quote";
 import { Services } from "@/components/Services";
 
-/**
- * The mock's sections land here in page order, one ticket at a time: Nav ·
- * Hero · Sobre · farol divider · Abordagem · Serviços · Frase · Dúvidas ·
- * Contato+Rodapé.
- */
 export default function Home() {
   return (
     <>
@@ -26,6 +22,7 @@ export default function Home() {
         <Quote />
         <Faq />
       </main>
+      <ContactFooter />
       <FloatingWhatsApp />
     </>
   );
