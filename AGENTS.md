@@ -1,5 +1,11 @@
 # AGENTS.md
 
+## Code comments
+
+Only add comments when they provide relevant information that cannot be
+inferred from reading the code alone. Do not use comments to narrate or restate
+the code.
+
 ## Testing
 
 The landing page is guarded by a committed-baseline visual regression suite:

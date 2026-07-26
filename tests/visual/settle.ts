@@ -155,11 +155,7 @@ async function loadLazyContent(page: Page) {
   });
 }
 
-/**
- * Two animation frames, so the layout the browser computed is the one it has
- * drawn. Exported for the assertions that have to give the page a chance to
- * react before deciding that it did not.
- */
+/** Waits two animation frames so computed layout has been painted. */
 export function nextPaint(page: Page) {
   return page.evaluate(
     () =>

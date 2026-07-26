@@ -80,13 +80,6 @@ test("the floating WhatsApp button opens the drafted conversation in a new tab",
   await expect(button).toHaveAttribute("target", "_blank");
 });
 
-/*
- * The same conversation from every button on the page, so a visitor who has
- * decided to write never wonders whether they picked the wrong one. Today that
- * is the bar's pill and the floating button; the hero, the Serviços band and
- * the footer add theirs as those sections land, and each is held to this
- * without the test having to learn about it.
- */
 test("every WhatsApp CTA leads to the same drafted conversation", async ({
   page,
 }, testInfo) => {
@@ -102,12 +95,6 @@ test("every WhatsApp CTA leads to the same drafted conversation", async ({
   }
 });
 
-/*
- * The nav is the one part of the page whose shape is a rule from the spec
- * rather than something the mock drew, so the rule is asserted rather than
- * left to the phone baseline to ratify.
- */
-
 test("the lockup leads to the top of the page", async ({ page }, testInfo) => {
   await openSettled(page, "/", testInfo);
 
@@ -116,8 +103,7 @@ test("the lockup leads to the top of the page", async ({ page }, testInfo) => {
     "#top",
   );
 
-  /* The one anchor on the page the nav owns, and the only one that has to
-     resolve while the sections it links to are still to land. */
+  // Section anchors intentionally remain unresolved until those sections ship.
   await expect(page.locator("#top")).toHaveCount(1);
 });
 
@@ -187,20 +173,12 @@ test.describe("below 1024", () => {
   }, testInfo) => {
     await openSettled(page, "/", testInfo);
 
-    /*
-     * The page is still mostly shell and has nothing to scroll yet, which
-     * would make this pass without proving anything. The height stands in for
-     * the sections that will supply it, and becomes a no-op once they do.
-     */
+    // Supply the scrollable height that later sections will provide.
     await page.addStyleTag({ content: "body { min-height: 300vh }" });
 
     const control = page.getByRole("button", { name: "Menu" });
 
-    /*
-     * A wheel over the page below the panel, rather than `window.scrollTo`:
-     * `overflow: hidden` stops a visitor scrolling but not a script, so a
-     * programmatic scroll would report the lock broken while it holds.
-     */
+    // `overflow: hidden` blocks wheel input but not programmatic scrolling.
     const wheelDown = async () => {
       await page.mouse.move(195, 600);
       await page.mouse.wheel(0, 400);
@@ -217,8 +195,6 @@ test.describe("below 1024", () => {
     await page.keyboard.press("Escape");
     await expect(control).toHaveAttribute("aria-expanded", "false");
 
-    /* The other half of the assertion: a wheel that moves nothing either way
-       would have made the first half pass for the wrong reason. */
     await wheelDown();
     await expect
       .poll(() => page.evaluate(() => window.scrollY))
@@ -232,7 +208,6 @@ test.describe("below 1024", () => {
 
     expect(await undersizedTargets(page)).toEqual([]);
 
-    /* The panel's own links are targets too, and only exist while it is open. */
     await page.getByRole("button", { name: "Menu" }).click();
     await expect(page.getByRole("link", { name: "Sobre" })).toBeVisible();
 
@@ -240,11 +215,6 @@ test.describe("below 1024", () => {
   });
 });
 
-/**
- * Every link and button the visitor can see that is smaller than a fingertip
- * in either direction, named the way a person would name it so that a failure
- * reads as "Sobre is 30px tall" rather than as a list of boxes.
- */
 async function undersizedTargets(page: Page) {
   return page.evaluate(() => {
     const MINIMUM_PX = 44;
@@ -254,8 +224,7 @@ async function undersizedTargets(page: Page) {
       .map((element) => ({ element, box: element.getBoundingClientRect() }))
       .filter(({ box }) => box.width < MINIMUM_PX || box.height < MINIMUM_PX)
       .map(({ element, box }) => ({
-        /* `||`, not `??`: an icon-only control has an empty `textContent`,
-           and "" would name the failure no better than nothing at all. */
+        // An icon-only control has empty textContent, so `??` is insufficient.
         target:
           element.getAttribute("aria-label") ||
           element.textContent?.trim() ||
