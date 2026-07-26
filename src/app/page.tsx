@@ -4,6 +4,7 @@ import { FarolDivider } from "@/components/FarolDivider";
 import { FloatingWhatsApp } from "@/components/FloatingWhatsApp";
 import { Hero } from "@/components/Hero";
 import { Nav } from "@/components/Nav";
+import { Services } from "@/components/Services";
 
 /**
  * The mock's sections land here in page order, one ticket at a time: Nav ·
@@ -19,6 +20,7 @@ export default function Home() {
         <About />
         <FarolDivider />
         <Approach />
+        <Services />
       </main>
       <FloatingWhatsApp />
     </>

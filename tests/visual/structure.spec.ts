@@ -324,6 +324,161 @@ test("the approach section presents ACT and DBT as complementary practices", asy
   ]);
 });
 
+test("the services section presents who Yasmim treats and how therapy unfolds", async ({
+  page,
+}, testInfo) => {
+  await openSettled(page, "/", testInfo);
+
+  const services = page.getByRole("region", {
+    name: "Cada história tem seu nome, e seu ritmo",
+  });
+
+  await expect(
+    services.getByText("Terapia individual", { exact: true }),
+  ).toBeVisible();
+  await expect(
+    services.getByText(
+      "Alguns nomes ajudam a orientar o caminho, mas aqui, você chega antes do diagnóstico.",
+      { exact: true },
+    ),
+  ).toBeVisible();
+
+  const disorders = services.getByRole("list", {
+    name: "Transtornos que trato",
+  });
+  const needs = services.getByRole("list", {
+    name: "Demandas específicas",
+  });
+
+  await expect(disorders.getByRole("listitem")).toHaveText([
+    "01Depressão",
+    "02Transtorno Bipolar",
+    "03Transtorno da Personalidade Borderline",
+    "04Neurodivergência",
+  ]);
+  await expect(needs.getByRole("listitem")).toHaveText([
+    "01Desregulação emocional",
+    "02Rigidez Cognitiva",
+    "03Comportamentos impulsivos",
+    "04Comportamento suicida e autolesivo",
+  ]);
+
+  await expect(
+    services.getByText("E costuma acontecer assim:", { exact: true }),
+  ).toBeVisible();
+  await expect(
+    services.getByRole("heading", { level: 4, name: "Chegar" }),
+  ).toBeVisible();
+  await expect(
+    services.getByText(
+      "Do jeito que der. Sem precisar organizar a história antes.",
+      { exact: true },
+    ),
+  ).toBeVisible();
+  await expect(
+    services.getByRole("heading", { level: 4, name: "Olhar junto" }),
+  ).toBeVisible();
+  await expect(
+    services.getByText(
+      "Entender padrões, dar nome ao que pesa, sem julgamento.",
+      { exact: true },
+    ),
+  ).toBeVisible();
+  await expect(
+    services.getByRole("heading", { level: 4, name: "Seguir" }),
+  ).toBeVisible();
+  await expect(
+    services.getByText(
+      "Passos pequenos e reais na direção do que importa para você.",
+      { exact: true },
+    ),
+  ).toBeVisible();
+
+  const invitation = services.getByText(
+    "Espaço para sentir. Liberdade para ser.",
+    { exact: true },
+  );
+  const cta = services.getByRole("link", { name: "Começar essa conversa" });
+
+  await expect(invitation).toBeVisible();
+  await expect(cta).toHaveAttribute("href", WHATSAPP_URL);
+  await expect(cta).toHaveAttribute("target", "_blank");
+  await expect(services.locator(":scope > [data-revealed]")).toHaveCount(3);
+});
+
+test("the phone services layout keeps the process after the lists and its invitation full-width", async ({
+  page,
+}, testInfo) => {
+  await page.setViewportSize({ width: 360, height: 844 });
+
+  await openSettled(page, "/", testInfo);
+
+  const services = page.getByRole("region", {
+    name: "Cada história tem seu nome, e seu ritmo",
+  });
+  const disorders = services.getByRole("list", {
+    name: "Transtornos que trato",
+  });
+  const needs = services.getByRole("list", { name: "Demandas específicas" });
+  const firstRow = disorders.getByRole("listitem").first();
+  const longRow = disorders.getByRole("listitem").nth(2);
+  const firstNumber = firstRow.getByText("01", { exact: true });
+  const firstLabel = firstRow.getByText("Depressão", { exact: true });
+  const number = longRow.getByText("03", { exact: true });
+  const label = longRow.getByText("Transtorno da Personalidade Borderline", {
+    exact: true,
+  });
+  const process = services.getByText("E costuma acontecer assim:", {
+    exact: true,
+  });
+  const invitation = services.getByText(
+    "Espaço para sentir. Liberdade para ser.",
+    { exact: true },
+  );
+  const band = invitation.locator("..");
+  const cta = services.getByRole("link", { name: "Começar essa conversa" });
+
+  const [
+    needsBox,
+    firstNumberBox,
+    firstLabelBox,
+    numberBox,
+    labelBox,
+    labelLines,
+    processBox,
+    bandBox,
+    ctaBox,
+  ] = await Promise.all([
+    needs.boundingBox(),
+    firstNumber.boundingBox(),
+    firstLabel.boundingBox(),
+    number.boundingBox(),
+    label.boundingBox(),
+    label.evaluate((element) => {
+      const lineHeight = Number.parseFloat(getComputedStyle(element).lineHeight);
+      return Math.round(element.getBoundingClientRect().height / lineHeight);
+    }),
+    process.boundingBox(),
+    band.boundingBox(),
+    cta.boundingBox(),
+  ]);
+
+  expect(needsBox).not.toBeNull();
+  expect(firstNumberBox).not.toBeNull();
+  expect(firstLabelBox).not.toBeNull();
+  expect(numberBox).not.toBeNull();
+  expect(labelBox).not.toBeNull();
+  expect(processBox).not.toBeNull();
+  expect(bandBox).not.toBeNull();
+  expect(ctaBox).not.toBeNull();
+  expect(processBox!.y).toBeGreaterThan(needsBox!.y + needsBox!.height);
+  expect(numberBox!.x).toBe(firstNumberBox!.x);
+  expect(labelBox!.x).toBe(firstLabelBox!.x);
+  expect(numberBox!.y).toBeLessThan(labelBox!.y + labelBox!.height / 2);
+  expect(labelLines).toBeGreaterThan(1);
+  expect(ctaBox!.width).toBe(bandBox!.width - 48);
+});
+
 test("the lockup leads to the top of the page", async ({ page }, testInfo) => {
   await openSettled(page, "/", testInfo);
 
