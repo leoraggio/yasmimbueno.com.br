@@ -4,6 +4,7 @@ import { FarolDivider } from "@/components/FarolDivider";
 import { FloatingWhatsApp } from "@/components/FloatingWhatsApp";
 import { Hero } from "@/components/Hero";
 import { Nav } from "@/components/Nav";
+import { Quote } from "@/components/Quote";
 import { Services } from "@/components/Services";
 
 /**
@@ -21,6 +22,7 @@ export default function Home() {
         <FarolDivider />
         <Approach />
         <Services />
+        <Quote />
       </main>
       <FloatingWhatsApp />
     </>

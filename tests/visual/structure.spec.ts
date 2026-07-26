@@ -479,6 +479,23 @@ test("the phone services layout keeps the process after the lists and its invita
   expect(ctaBox!.width).toBe(bandBox!.width - 48);
 });
 
+test("the quote gives Steven C. Hayes's words their own revealed field", async ({
+  page,
+}, testInfo) => {
+  await openSettled(page, "/", testInfo);
+
+  const quote = page.locator("blockquote");
+  const quoteSection = quote.locator("xpath=../..");
+
+  await expect(quote).toHaveText(
+    "Quanto mais tentamos eliminar a dor, mais reduzimos nossa vida. A melhor forma de lidar com o sofrimento é ampliando a vida e fortalecendo o que é valoroso para nós.",
+  );
+  await expect(
+    quoteSection.getByText("Steven C. Hayes", { exact: true }),
+  ).toBeVisible();
+  await expect(quoteSection.locator(":scope > [data-revealed]")).toHaveCount(1);
+});
+
 test("the lockup leads to the top of the page", async ({ page }, testInfo) => {
   await openSettled(page, "/", testInfo);
 
